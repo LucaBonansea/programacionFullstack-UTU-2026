@@ -1,147 +1,138 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Github DashBoard</title>
+    <title>GitHub Dashboard</title>
 </head>
 <body>
+
+    <!-- HEADER -->
     <header>
-        <button>boton</button>
-        <img src="/assets/img/github.svg" alt="logo de github">
-        <button><img src="/assets/img/opcion1" alt="Chat with copilot"></button>
-        <button><img src="/assets/img/issues.svg" alt="Issues"></button>
-        <button><img src="/assets/img/pulls.svg" alt="Pull requests"></button>
-        <button><img src="/assets/img/projects.svg" alt="Projects"></button>
+        <nav>
+            <ul>
+                <li><button><span>Menu</span></button></li>
+                <li><img src="/assets/img/github.svg" alt="Logo de GitHub"></li>
+                <li><button><span>Copilot</span></button></li>
+                <li><button><span>Issues</span></button></li>
+                <li><button><span>Pull Requests</span></button></li>
+                <li><button><span>Projects</span></button></li>
+            </ul>
+        </nav>
     </header>
+
+    <!-- MAIN -->
     <main>
+
+        <!-- SIDEBAR -->
+        <aside>
+            <nav>
+                <ul>
+                    <li><a href="">Inicio</a></li>
+                    <li><a href="">Repositorios</a></li>
+                </ul>
+            </nav>
+
+            <section>
+                <h2>Repositorios</h2>
+                <ul>
+                    <li>
+                        <article>
+                            <img src="/assets/img/github.svg" alt="Repo">
+                            <span>Repositorio 1</span>
+                        </article>
+                    </li>
+                    <li>
+                        <article>
+                            <img src="/assets/img/github.svg" alt="Repo">
+                            <span>Repositorio 2</span>
+                        </article>
+                    </li>
+                    <li>
+                        <article>
+                            <img src="/assets/img/github.svg" alt="Repo">
+                            <span>Repositorio 3</span>
+                        </article>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
         <section>
-            <aside>
-                <p>......</p>
-                <a href="">....</a>
+
+            <!-- INPUT / CHAT -->
+            <div>
+                <h2>Copilot</h2>
+
+                <form>
+                    <textarea placeholder="Ask anything"></textarea>
+
+                    <div>
+                        <button type="submit"><span>Send</span></button>
+                        <button><span>Opción</span></button>
+                        <button><span>Opción</span></button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- REPOS -->
+            <section>
+                <h2>Repositorios populares</h2>
 
                 <div>
-                    <img src="/assets/img/github.svg" alt="logo de github">
-                    <p>REPOSITORIO 1</p>
-                </div>
-                <div>
-                    <img src="/assets/img/github.svg" alt="logo de github">
-                    <p>REPOSITORIO 2</p>
-                </div>
-                <div>
-                    <img src="/assets/img/github.svg" alt="logo de github">
-                    <p>REPOSITORIO 3</p>
-                </div>
-                <div>
-                    <img src="/assets/img/github.svg" alt="logo de github">
-                    <p>REPOSITORIO 4</p>
-                </div>
-                <div>
-                    <img src="/assets/img/github.svg" alt="logo de github">
-                    <p>REPOSITORIO 5</p>
-                </div>
-                <div>
-                    <img src="/assets/img/github.svg" alt="logo de github">
-                    <p>REPOSITORIO 6</p>
-                </div>
-            </aside>
-        </section>
-        <section>
-            <h2>........</h2>
-            <div>
-            <textarea name="" id="" placeholder="Ask anything"></textarea>
-            <div>
-                    <button>Send</button>
-                    <button>.........</button>
-                    <button>..........</button>
-            </div>
-            </div>
-          
-            <p>........</p>   
-            <button>........</button>
 
-            <div>
-                <div>
-                    <img src="logo" alt="Logo de crecimiento del repositorio pascalorg/editor">
-                    <button>.......</button>
+                    <article>
+                        <img src="logo" alt="Repo pascalorg/editor">
+                        <h3><a href="">pascalorg/editor</a></h3>
+                        <button><span>Star</span></button>
+                    </article>
+
+                    <article>
+                        <img src="logo" alt="Repo octocat/hello-world">
+                        <h3><a href="">octocat/hello-world</a></h3>
+                        <button><span>Star</span></button>
+                    </article>
+
+                    <article>
+                        <img src="logo" alt="Repo microsoft/vscode">
+                        <h3><a href="">microsoft/vscode</a></h3>
+                        <button><span>Star</span></button>
+                    </article>
+
+                    <article>
+                        <img src="logo" alt="Repo torvalds/linux">
+                        <h3><a href="">torvalds/linux</a></h3>
+                        <button><span>Star</span></button>
+                    </article>
+
                 </div>
-                <div>
-                    <a href=""><img src="" alt="Logo del repositorio pascalorg/editor">pascalorg/editor</a>
-                    <button><img src="/asstes" alt="Estrella">Star</button>
-                </div>
-                <div>
-                    <img src="logo" alt="Logo de crecimiento del repositorio octocat/hello-world">
-                    <button>.......</button>
-                </div>
-                <div>
-                    <a href=""><img src="" alt="Logo del repositorio octocat/hello-world">octocat/hello-world</a>
-                    <button><img src="/asstes" alt="Estrella">Star</button>
-                </div>
-                <div>
-                    <img src="logo" alt="Logo de crecimiento del repositorio microsoft/vscode">
-                    <button>.......</button>
-                </div>
-                <div>
-                    <a href=""><img src="" alt="Logo del repositorio microsoft/vscode">microsoft/vscode</a>
-                    <button><img src="/asstes" alt="Estrella">Star</button>
-                </div>
-                <div>
-                    <img src="logo" alt="Logo de crecimiento del repositorio torvalds/linux">
-                    <button>.......</button>
-                </div>
-                <div>
-                    <a href=""><img src="" alt="Logo del repositorio torvalds/linux">torvalds/linux</a>
-                    <button><img src="/asstes" alt="Estrella">Star</button>
-                </div>
-                <div>
-                    <img src="logo" alt="Logo de crecimiento del repositorio django/django">
-                    <button>.......</button>
-                </div>
-                <div>
-                    <a href=""><img src="" alt="Logo del repositorio django/django">django/django</a>
-                    <button><img src="/asstes" alt="Estrella">Star</button>
-                </div>
-                <div>
-                    <img src="logo" alt="Logo de crecimiento del repositorio reactjs/reactjs.org">
-                    <button>.......</button>
-                </div>
-                <div>
-                    <a href=""><img src="" alt="Logo del repositorio reactjs/reactjs.org">reactjs/reactjs.org</a>
-                    <button><img src="/asstes" alt="Estrella">Star</button>
-                </div>
-                <div>
-                    <img src="logo" alt="Logo de crecimiento del repositorio flutter/flutter">
-                    <button>.......</button>
-                </div>
-                <div>
-                    <a href=""><img src="" alt="Logo del repositorio flutter/flutter">flutter/flutter</a>
-                    <button><img src="/asstes" alt="Estrella">Star</button>
-                </div>
-                <div>
-                    <img src="logo" alt="Logo de crecimiento del repositorio kubernetes/kubernetes">
-                    <button>.......</button>
-                </div>
-                <div>
-                    <a href=""><img src="" alt="Logo del repositorio kubernetes/kubernetes">kubernetes/kubernetes</a>
-                    <button><img src="/asstes" alt="Estrella">Star</button>
-                </div>
-            </div>
+            </section>
+
         </section>
+
     </main>
+
+    <!-- FOOTER -->
     <footer>
-        <div>
-             <ul> 
+
+        <nav>
+            <ul>
                 <li><a href="">Terms</a></li>
-                <li><a href="">Privacy</a></li> 
-                <li><a href="">Security</a></li> 
-                <li><a href="">Status</a></li> 
-                <li><a href="">Community</a></li>          <li><a href="">Docs</a></li>   
-             </ul>
-        </div>
+                <li><a href="">Privacy</a></li>
+                <li><a href="">Security</a></li>
+                <li><a href="">Status</a></li>
+                <li><a href="">Community</a></li>
+                <li><a href="">Docs</a></li>
+            </ul>
+        </nav>
+
         <div>
-            <img src="/assets/img/github.svg" alt="Icono de github">
+            <img src="/assets/img/github.svg" alt="Icono de GitHub">
             <p>© 2026 GitHub, Inc.</p>
         </div>
+
     </footer>
+
 </body>
 </html>
