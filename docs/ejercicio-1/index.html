@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="stylesheet" href="/ejercicio-1/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luca Bonansea</title>
+</head>
+<body>
+    <h1>Luca Bonanansea Bonomi</h1>
+    <p>Soy un alumno del IAE, que esta haciendo un trabajo.</p>
+    <p>Me interesa programar <br> y me gustaria aprender más sobre esta materia.</p>
+   <hr>
+   <p>Mi comida favorita es la milanesa napolitana, mi juego favorito es minecraft y me serie favorita es el mentalista.</p>
+
+   <ul>
+        <li>Programar</li>
+        <li>Jugar con amigos</li>
+        <li>Ver películas</li>
+   </ul>
+   <img src="/ejercicio-1/images.jpeg" alt="Una imagen de codigo de programcion. ">
+   <br>
+   <a href="https://youtu.be/CnGKlh9IjSg?si=3H4cJcaazrLt4a8T" target="_blank">Resident Evil 9</a>
+   <br>
+   <br>
+   <table>
+    <tr class="columna1">
+        <th>2022</th>
+        <th>2023</th>
+        <th>2024</th>
+    </tr>
+    <tr class="columna2">
+        <td>Estudie un curso de HTML y CSS con Alvaro.</td>
+        <td>Estude JavaScript en la IBEC.</td>
+        <td>Inicie el batchillerato de informatica. </td>
+    </tr>
+   </table>
+
+   <select>
+        <option value="">HTML</option>
+        <option value="">CSS</option>
+        <option value="">JavaScript</option>
+   </select>
+   <br>
+    <!-- Video de un Juegazo -->
+     <iframe width="560" height="315" src="https://www.youtube.com/embed/T54OWinnymM?si=rMmP04TaVODvjK9T" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <br>
+    <!--Con este boton puedo abrir el Dialogo que tengo  justo abajo-->
+    <button id="openDialog">Abrir diálogo</button>
+
+    <!-- Diálogo con su identificador "miDialogo" para poder manipularlo con JavaScript -->
+    <dialog id="miDialogo">
+        <!--Esto solo es el mensaje del dialogo-->
+        <p>Este es un diálogo de ejemplo.</p>
+        <!-- Botón para cerrar el diálogo -->
+        <button id="closeDialog">Cerrar</button>
+    </dialog>
+    <!--Este es el script para manipular el diálogo y darle las funcionalidades como abrir dialogo o cerrarlo -->
+    <script>
+        // Me traigo los elementos para poder manipularlos con JavaScript
+        const dialog = document.getElementById('miDialogo');
+        const openBtn = document.getElementById('openDialog');
+        const closeBtn = document.getElementById('closeDialog');
+
+        // Agrego los eventos para abrir y cerrar el diálogo cuando se hagan click en los botones correspondientes
+        openBtn.addEventListener('click', () => dialog.showModal());
+        closeBtn.addEventListener('click', () => dialog.close());
+    </script>
+</body>
+</html>
