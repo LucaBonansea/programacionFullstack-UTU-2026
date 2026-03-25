@@ -79,5 +79,30 @@
       "type": "pending"
     }
   ],
-  "tasks": []
+  "tasks": [
+    {
+      "title": "Estudiar HTML",
+      "description": "Aprender estructura básica de HTML",
+      "emoji": "📖",
+      "completed": true
+    },
+    {
+      "title": "Practicar CSS",
+      "description": "Mejorar estilos y diseño responsivo",
+      "emoji": "🎨",
+      "completed": true
+    },
+    {
+      "title": "JavaScript Avanzado",
+      "description": "Dominar promesas y async/await",
+      "emoji": "⚙️",
+      "completed": false
+    },
+    {
+      "title": "Crear portfolio",
+      "description": "Hacer un portafolio personal",
+      "emoji": "💼",
+      "completed": false
+    }
+  ]
 }

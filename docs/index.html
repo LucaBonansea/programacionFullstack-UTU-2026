@@ -125,85 +125,102 @@
             border-top: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        /* Estilos para el panel de administración */
-        .admin-panel {
-            background: white;
+        /* Progreso */
+        .progress-section {
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            display: none;
+            padding: 25px;
+            margin: 40px 0;
+            backdrop-filter: blur(10px);
         }
 
-        .admin-panel h3 {
-            color: #667eea;
-            margin-bottom: 20px;
-        }
-
-        .task-form {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .task-form input {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-        }
-
-        .task-form button {
-            padding: 10px 15px;
-            background: #667eea;
+        .progress-title {
             color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            font-weight: 600;
         }
 
-        .task-form button:hover {
-            background: #764ba2;
+        .progress-bar-container {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            height: 30px;
+            margin-bottom: 15px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        .task-list {
-            list-style: none;
-        }
-
-        .task-item {
+        .progress-bar {
+            background: linear-gradient(90deg, #28a745, #20c997);
+            height: 100%;
+            transition: width 0.3s ease;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .task-item.completed {
-            text-decoration: line-through;
-            color: #888;
-        }
-
-        .task-actions button {
-            margin-left: 5px;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .edit-btn {
-            background: #ffa500;
+            justify-content: center;
             color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
         }
 
-        .delete-btn {
-            background: #dc3545;
-            color: white;
+        .progress-stats {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
-        .complete-btn {
-            background: #28a745;
-            color: white;
+        .stat-box {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            min-width: 120px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-number {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #20c997;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        /* Tareas */
+        .task-card {
+            border-left: 5px solid #667eea;
+        }
+
+        .task-card.completed {
+            border-left-color: #28a745;
+        }
+
+        .task-card.pending {
+            border-left-color: #ffa500;
+        }
+
+        .task-status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .task-status-badge.completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .task-status-badge.pending {
+            background: #fff3cd;
+            color: #856404;
         }
     </style>
 </head>
@@ -212,7 +229,7 @@
         <header>
             <h1>📚 Programación FULLSTACK</h1>
             <p class="subtitle">Índice de Proyectos y Ejercicios - UTU 2026</p>
-            <button id="adminBtn" onclick="checkPassword()" style="position: absolute; top: 20px; right: 20px; padding: 10px 15px; background: #667eea; color: white; border: none; border-radius: 6px; cursor: pointer;">Administrador</button>
+
         </header>
 
         <!-- Ejercicios completados -->
@@ -227,6 +244,24 @@
             <div style="text-align: center; color: white; padding: 40px;">Cargando...</div>
         </div>
 
+        <!-- Sección de progreso de tareas -->
+        <div class="progress-section" id="progressSection" style="display: none;">
+            <div class="progress-title">📊 Progreso de Tareas</div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar" style="width: 0%;"></div>
+            </div>
+            <div class="progress-stats">
+                <div class="stat-box">
+                    <div class="stat-number" id="completedCount">0</div>
+                    <div class="stat-label">Completadas</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="totalCount">0</div>
+                    <div class="stat-label">Total</div>
+                </div>
+            </div>
+        </div>
+
         <!-- Tareas -->
         <h2 class="section-title">📋 Tareas</h2>
         <div class="grid" id="tasksGrid">
@@ -236,223 +271,64 @@
         <footer>
             <p>&copy; 2026 - Programación FULLSTACK | UTU</p>
         </footer>
-
-        <!-- Panel de Administración -->
-        <div class="admin-panel" id="adminPanel">
-            <h3>📋 Gestión de Tareas</h3>
-            <div class="task-form">
-                <input type="text" id="taskTitle" placeholder="Título de la tarea">
-                <input type="text" id="taskDescription" placeholder="Descripción">
-                <input type="text" id="taskEmoji" placeholder="Emoji (opcional)" value="📋">
-                <button onclick="addTask()">Agregar</button>
-            </div>
-            <ul class="task-list" id="taskList"></ul>
-            <h4>Almacenamiento</h4>
-            <p style="color: #888; font-size: 0.9em;">Los cambios se guardan automáticamente en localStorage de tu navegador.</p>
-            <button onclick="signOut()">Cerrar Sesión</button>
-        </div>
     </div>
 
     <script>
-        // Cargar proyectos desde JSON
+        // Cargar y mostrar proyectos y tareas
         fetch('./projects.json')
-            .then(response => response.json())
+            .then(r => r.json())
             .then(data => {
-                const completedGrid = document.getElementById('completedGrid');
-                const pendingGrid = document.getElementById('pendingGrid');
-                const tasksGrid = document.getElementById('tasksGrid');
-                
-                completedGrid.innerHTML = '';
-                pendingGrid.innerHTML = '';
-                tasksGrid.innerHTML = '';
-
-                // Filtrar proyectos completados y pendientes
-                const completed = data.projects.filter(p => p.type === 'completed');
-                const pending = data.projects.filter(p => p.type === 'pending');
-                const tasks = data.tasks || [];
-
                 // Renderizar completados
-                if (completed.length > 0) {
-                    completed.forEach(project => {
-                        completedGrid.innerHTML += createCard(project);
-                    });
-                } else {
-                    completedGrid.innerHTML = '<div style="text-align: center; color: white; padding: 40px;">No hay ejercicios completados</div>';
-                }
+                const completed = data.projects.filter(p => p.type === 'completed');
+                document.getElementById('completedGrid').innerHTML = completed.length > 0
+                    ? completed.map(p => createCard(p)).join('')
+                    : '<div style="text-align: center; color: white; padding: 40px;">No hay ejercicios completados</div>';
 
                 // Renderizar pendientes
-                if (pending.length > 0) {
-                    pending.forEach(project => {
-                        pendingGrid.innerHTML += createCard(project);
-                    });
-                } else {
-                    pendingGrid.innerHTML = '<div style="text-align: center; color: white; padding: 40px;">¡Todos los ejercicios completados!</div>';
-                }
+                const pending = data.projects.filter(p => p.type === 'pending');
+                document.getElementById('pendingGrid').innerHTML = pending.length > 0
+                    ? pending.map(p => createCard(p)).join('')
+                    : '<div style="text-align: center; color: white; padding: 40px;">¡Todos los ejercicios completados!</div>';
 
                 // Renderizar tareas
+                const tasks = data.tasks || [];
+                document.getElementById('tasksGrid').innerHTML = tasks.length > 0
+                    ? tasks.map(t => createTaskCard(t)).join('')
+                    : '<div style="text-align: center; color: white; padding: 40px;">No hay tareas</div>';
+
+                // Actualizar progreso
                 if (tasks.length > 0) {
-                    tasks.forEach(task => {
-                        tasksGrid.innerHTML += createTaskCard(task);
-                    });
-                } else {
-                    tasksGrid.innerHTML = '<div style="text-align: center; color: white; padding: 40px;">No hay tareas</div>';
+                    const completed = tasks.filter(t => t.completed).length;
+                    const percentage = (completed / tasks.length) * 100;
+                    document.getElementById('progressSection').style.display = 'block';
+                    document.getElementById('progressBar').style.width = percentage + '%';
+                    document.getElementById('progressBar').textContent = percentage.toFixed(0) + '%';
+                    document.getElementById('completedCount').textContent = completed;
+                    document.getElementById('totalCount').textContent = tasks.length;
                 }
-            })
-            .catch(error => {
-                console.error('Error cargando proyectos:', error);
-                document.getElementById('completedGrid').innerHTML = '<div style="color: red;">Error al cargar los proyectos</div>';
             });
 
-        // Función para crear una tarjeta
-        function createCard(project) {
+        // Crear tarjeta de proyecto
+        function createCard(p) {
             let content = '';
-            
-            if (project.subprojects) {
-                // Si tiene subproyectos - mostrar todos
-                content = project.subprojects.map(sub => 
-                    `<li><a href="${sub.path}" target="_blank">${sub.emoji} ${sub.name}</a></li>`
+            if (p.subprojects) {
+                content = p.subprojects.map(s => 
+                    `<li><a href="${s.path}" target="_blank">${s.emoji} ${s.name}</a></li>`
                 ).join('');
-            } else if (project.path) {
-                // Si tiene un solo proyecto
-                content = `<li><a href="${project.path}" target="_blank">Ver Proyecto</a></li>`;
+            } else if (p.path) {
+                content = `<li><a href="${p.path}" target="_blank">Ver Proyecto</a></li>`;
             } else {
-                // Si está pendiente - sin contenido
-                return `
-                    <div class="card">
-                        <div class="card-header">${project.emoji} ${project.title}</div>
-                        <div class="card-content">
-                            <div class="empty-section">
-                                Por completar...
-                            </div>
-                        </div>
-                    </div>
-                `;
+                return `<div class="card"><div class="card-header">${p.emoji} ${p.title}</div><div class="card-content"><div class="empty-section">Por completar...</div></div></div>`;
             }
-
-            return `
-                <div class="card">
-                    <div class="card-header">${project.emoji} ${project.title}</div>
-                    <div class="card-content">
-                        <ul class="links-list">
-                            ${content}
-                        </ul>
-                    </div>
-                </div>
-            `;
+            return `<div class="card"><div class="card-header">${p.emoji} ${p.title}</div><div class="card-content"><ul class="links-list">${content}</ul></div></div>`;
         }
 
-        // Función para crear una tarjeta de tarea
-        function createTaskCard(task) {
-            return `
-                <div class="card">
-                    <div class="card-header">${task.emoji || '📋'} ${task.title}</div>
-                    <div class="card-content">
-                        <p>${task.description || 'Sin descripción'}</p>
-                        <p><strong>Estado:</strong> ${task.completed ? 'Completada' : 'Pendiente'}</p>
-                    </div>
-                </div>
-            `;
+        // Crear tarjeta de tarea
+        function createTaskCard(t) {
+            const status = t.completed ? 'completed' : 'pending';
+            const text = t.completed ? '✅ Completada' : '⏳ Pendiente';
+            return `<div class="card task-card ${status}"><div class="card-header">${t.emoji || '📋'} ${t.title}</div><div class="card-content"><p>${t.description || 'Sin descripción'}</p><span class="task-status-badge ${status}">${text}</span></div></div>`;
         }
-    </script>
-
-    <script>
-        // Sistema de autenticación con contraseña y gestión de tareas
-        const ADMIN_PASSWORD = 'fullstack2026';
-        let isAuthenticated = false;
-        let currentTasks = [];
-
-        // Verificar contraseña
-        function checkPassword() {
-            const password = prompt('Ingresa la contraseña de administrador:');
-            if (password === ADMIN_PASSWORD) {
-                isAuthenticated = true;
-                document.getElementById('adminPanel').style.display = 'block';
-                document.getElementById('adminBtn').style.display = 'none';
-                loadTasks();
-            } else if (password !== null) {
-                alert('Contraseña incorrecta.');
-            }
-        }
-
-        // Cerrar sesión
-        function signOut() {
-            isAuthenticated = false;
-            document.getElementById('adminPanel').style.display = 'none';
-            document.getElementById('adminBtn').style.display = 'block';
-        }
-
-        // Cargar tareas desde localStorage (para edición)
-        function loadTasks() {
-            currentTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-            const taskList = document.getElementById('taskList');
-            taskList.innerHTML = '';
-            currentTasks.forEach((task, index) => {
-                const li = document.createElement('li');
-                li.className = 'task-item' + (task.completed ? ' completed' : '');
-                li.innerHTML = `
-                    <span>${task.emoji || '📋'} ${task.title}: ${task.description}</span>
-                    <div class="task-actions">
-                        <button class="complete-btn" onclick="toggleComplete(${index})">${task.completed ? 'Desmarcar' : 'Completar'}</button>
-                        <button class="edit-btn" onclick="editTask(${index})">Editar</button>
-                        <button class="delete-btn" onclick="deleteTask(${index})">Eliminar</button>
-                    </div>
-                `;
-                taskList.appendChild(li);
-            });
-        }
-
-        // Agregar tarea
-        function addTask() {
-            if (!isAuthenticated) return;
-            const title = document.getElementById('taskTitle').value.trim();
-            const description = document.getElementById('taskDescription').value.trim();
-            const emoji = document.getElementById('taskEmoji').value.trim();
-            if (title) {
-                currentTasks.push({ title, description, emoji, completed: false });
-                localStorage.setItem('tasks', JSON.stringify(currentTasks));
-                document.getElementById('taskTitle').value = '';
-                document.getElementById('taskDescription').value = '';
-                document.getElementById('taskEmoji').value = '📋';
-                loadTasks();
-            }
-        }
-
-        // Editar tarea
-        function editTask(index) {
-            if (!isAuthenticated) return;
-            const task = currentTasks[index];
-            const newTitle = prompt('Editar título:', task.title);
-            const newDescription = prompt('Editar descripción:', task.description);
-            const newEmoji = prompt('Editar emoji:', task.emoji);
-            if (newTitle !== null && newTitle.trim()) {
-                currentTasks[index] = { ...task, title: newTitle.trim(), description: newDescription.trim(), emoji: newEmoji.trim() };
-                localStorage.setItem('tasks', JSON.stringify(currentTasks));
-                loadTasks();
-            }
-        }
-
-        // Eliminar tarea
-        function deleteTask(index) {
-            if (!isAuthenticated) return;
-            if (confirm('¿Eliminar esta tarea?')) {
-                currentTasks.splice(index, 1);
-                localStorage.setItem('tasks', JSON.stringify(currentTasks));
-                loadTasks();
-            }
-        }
-
-        // Alternar completado
-        function toggleComplete(index) {
-            if (!isAuthenticated) return;
-            currentTasks[index].completed = !currentTasks[index].completed;
-            localStorage.setItem('tasks', JSON.stringify(currentTasks));
-            loadTasks();
-        }
-
-        // Inicializar al cargar
-        window.onload = function() {
-            // Nada especial, ya que es estático
-        };
     </script>
 </body>
 </html>
