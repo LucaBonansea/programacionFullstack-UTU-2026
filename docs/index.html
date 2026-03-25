@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programación FULLSTACK - Índice de Proyectos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .links-list {
+            list-style: none;
+        }
+
+        .links-list li {
+            margin-bottom: 12px;
+        }
+
+        .links-list a {
+            display: block;
+            padding: 12px 15px;
+            background: #f0f0f0;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .links-list a:hover {
+            background: #667eea;
+            color: white;
+            border-left-color: #764ba2;
+            padding-left: 20px;
+        }
+
+        .section-title {
+            color: white;
+            font-size: 1.8em;
+            margin: 40px 0 20px 0;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .empty-section {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px dashed rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Programación FULLSTACK</h1>
+            <p class="subtitle">Índice de Proyectos y Ejercicios - UTU 2026</p>
+        </header>
+
+        <!-- Ejercicios completados -->
+        <h2 class="section-title">✅ Ejercicios Completados</h2>
+        <div class="grid" id="completedGrid">
+            <div style="text-align: center; color: white; padding: 40px;">Cargando...</div>
+        </div>
+
+        <!-- Ejercicios en progreso -->
+        <h2 class="section-title">🔄 Ejercicios en Progreso</h2>
+        <div class="grid" id="pendingGrid">
+            <div style="text-align: center; color: white; padding: 40px;">Cargando...</div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 - Programación FULLSTACK | UTU</p>
+        </footer>
+    </div>
+
+    <script>
+        // Cargar proyectos desde JSON
+        fetch('./projects.json')
+            .then(response => response.json())
+            .then(data => {
+                const completedGrid = document.getElementById('completedGrid');
+                const pendingGrid = document.getElementById('pendingGrid');
+                
+                completedGrid.innerHTML = '';
+                pendingGrid.innerHTML = '';
+
+                // Filtrar proyectos completados y pendientes
+                const completed = data.projects.filter(p => p.type === 'completed');
+                const pending = data.projects.filter(p => p.type === 'pending');
+
+                // Renderizar completados
+                if (completed.length > 0) {
+                    completed.forEach(project => {
+                        completedGrid.innerHTML += createCard(project);
+                    });
+                } else {
+                    completedGrid.innerHTML = '<div style="text-align: center; color: white; padding: 40px;">No hay ejercicios completados</div>';
+                }
+
+                // Renderizar pendientes
+                if (pending.length > 0) {
+                    pending.forEach(project => {
+                        pendingGrid.innerHTML += createCard(project);
+                    });
+                } else {
+                    pendingGrid.innerHTML = '<div style="text-align: center; color: white; padding: 40px;">¡Todos los ejercicios completados!</div>';
+                }
+            })
+            .catch(error => {
+                console.error('Error cargando proyectos:', error);
+                document.getElementById('completedGrid').innerHTML = '<div style="color: red;">Error al cargar los proyectos</div>';
+            });
+
+        // Función para crear una tarjeta
+        function createCard(project) {
+            let content = '';
+            
+            if (project.subprojects) {
+                // Si tiene subproyectos - mostrar todos
+                content = project.subprojects.map(sub => 
+                    `<li><a href="${sub.path}" target="_blank">${sub.emoji} ${sub.name}</a></li>`
+                ).join('');
+            } else if (project.path) {
+                // Si tiene un solo proyecto
+                content = `<li><a href="${project.path}" target="_blank">Ver Proyecto</a></li>`;
+            } else {
+                // Si está pendiente - sin contenido
+                return `
+                    <div class="card">
+                        <div class="card-header">${project.emoji} ${project.title}</div>
+                        <div class="card-content">
+                            <div class="empty-section">
+                                Por completar...
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="card">
+                    <div class="card-header">${project.emoji} ${project.title}</div>
+                    <div class="card-content">
+                        <ul class="links-list">
+                            ${content}
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
