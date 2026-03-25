@@ -30,15 +30,15 @@ El proyecto incluye un sistema de visualización y gestión de tareas integrado 
 ### Funcionalidades
 
 - Visualización pública de proyectos y tareas.
-- Autenticación con Personal Access Token de GitHub para acceso administrativo (bloquea `liberatorsouls85@gmail.com`).
-- Gestión de tareas con guardado automático en el repositorio de GitHub.
+- Acceso administrativo protegido con contraseña.
+- Gestión de tareas con almacenamiento en localStorage del navegador.
 
 ### Cómo acceder al panel administrativo
 
 1. Haz clic en "Administrador" en la página.
-2. Ingresa tu Personal Access Token de GitHub (con scopes `repo` y `user:email`).
-3. Si tu email no es el bloqueado, se mostrará el panel para gestionar tareas.
+2. Ingresa la contraseña: `fullstack2026`.
+3. Se abrirá el panel para gestionar tareas.
 
-### Producción
+### Almacenamiento
 
-El sistema es completamente estático y funciona en GitHub Pages sin necesidad de backend.
+Las tareas se guardan en localStorage de tu navegador. Para hacer cambios permanentes en el repositorio de GitHub, sincroniza manualmente o configura un backend.
