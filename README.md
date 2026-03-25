@@ -27,42 +27,18 @@ Elegí organizar los ejercicios por número para mantenerlos simples y en orden.
 
 El proyecto incluye un sistema de visualización y gestión de tareas integrado en `docs/index.html`.
 
-### Configuración
-
-1. Instala las dependencias:
-
-   ```
-   npm install
-   ```
-
-2. Crea un archivo `.env` basado en `.env.example`:
-
-   ```
-   cp .env.example .env
-   ```
-
-3. Configura las variables de entorno en `.env`:
-   - `GITHUB_CLIENT_ID`: Obtén de [GitHub OAuth Apps](https://github.com/settings/developers).
-   - `GITHUB_CLIENT_SECRET`: Obtén del mismo lugar.
-
-4. Para el OAuth App de GitHub:
-   - Homepage URL: `http://localhost:3000` (para desarrollo).
-   - Authorization callback URL: `http://localhost:3000/auth/github/callback`.
-
-5. Ejecuta el servidor:
-
-   ```
-   npm start
-   ```
-
-6. Abre `http://localhost:3000` en tu navegador.
-
 ### Funcionalidades
 
 - Visualización pública de proyectos y tareas.
-- Autenticación con GitHub para acceso administrativo (bloquea `liberatorsouls85@gmail.com`).
+- Autenticación con Personal Access Token de GitHub para acceso administrativo (bloquea `liberatorsouls85@gmail.com`).
 - Gestión de tareas con guardado automático en el repositorio de GitHub.
+
+### Cómo acceder al panel administrativo
+
+1. Haz clic en "Administrador" en la página.
+2. Ingresa tu Personal Access Token de GitHub (con scopes `repo` y `user:email`).
+3. Si tu email no es el bloqueado, se mostrará el panel para gestionar tareas.
 
 ### Producción
 
-Para desplegar en producción (ej. Vercel, Heroku), configura las variables de entorno en el panel de tu proveedor de hosting. No es necesario modificar el código fuente.
+El sistema es completamente estático y funciona en GitHub Pages sin necesidad de backend.

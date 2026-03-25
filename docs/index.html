@@ -212,7 +212,7 @@
         <header>
             <h1>📚 Programación FULLSTACK</h1>
             <p class="subtitle">Índice de Proyectos y Ejercicios - UTU 2026</p>
-            <button id="adminBtn" onclick="window.location.href='/auth/github'" style="position: absolute; top: 20px; right: 20px; padding: 10px 15px; background: #667eea; color: white; border: none; border-radius: 6px; cursor: pointer;">Iniciar sesión con GitHub</button>
+            <button id="adminBtn" onclick="adminLogin()" style="position: absolute; top: 20px; right: 20px; padding: 10px 15px; background: #667eea; color: white; border: none; border-radius: 6px; cursor: pointer;">Administrador</button>
         </header>
 
         <!-- Ejercicios completados -->
@@ -358,29 +358,48 @@
     </script>
 
     <script>
-        // Sistema de autenticación con GitHub y gestión de tareas
+        // Sistema de autenticación con GitHub token y gestión de tareas
         let isAuthenticated = false;
         let githubToken = '';
         let currentTasks = [];
 
-        // Verificar autenticación desde URL
-        function checkAuth() {
-            const urlParams = new URLSearchParams(window.location.search);
-            githubToken = urlParams.get('token');
-            const email = urlParams.get('email');
-            if (githubToken && email) {
+        // Autenticación con token de GitHub
+        async function adminLogin() {
+            const token = prompt('Ingresa tu Personal Access Token de GitHub:');
+            if (!token) return;
+
+            try {
+                const response = await fetch('https://api.github.com/user', {
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                if (!response.ok) throw new Error('Token inválido');
+
+                const user = await response.json();
+                if (user.email === 'liberatorsouls85@gmail.com') {
+                    alert('Acceso denegado para esta cuenta.');
+                    return;
+                }
+
                 isAuthenticated = true;
+                githubToken = token;
                 document.getElementById('adminPanel').style.display = 'block';
                 document.getElementById('adminBtn').style.display = 'none';
-                // Limpiar URL
-                window.history.replaceState({}, document.title, window.location.pathname);
                 loadTasks();
+            } catch (error) {
+                console.error('Error en autenticación:', error);
+                alert('Error de autenticación: ' + error.message);
             }
         }
 
         // Cerrar sesión
         function signOut() {
-            window.location.href = '/logout';
+            isAuthenticated = false;
+            githubToken = '';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('adminBtn').style.display = 'block';
         }
 
         // Cargar tareas desde localStorage (para edición)
@@ -503,7 +522,7 @@
 
         // Inicializar al cargar
         window.onload = function() {
-            checkAuth();
+            // Nada especial, ya que es estático
         };
     </script>
 </body>
