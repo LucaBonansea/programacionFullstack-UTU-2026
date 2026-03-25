@@ -27,6 +27,7 @@
             text-align: center;
             color: white;
             margin-bottom: 50px;
+            position: relative;
         }
 
         h1 {
@@ -123,6 +124,87 @@
             padding-top: 20px;
             border-top: 1px solid rgba(255, 255, 255, 0.2);
         }
+
+        /* Estilos para el panel de administración */
+        .admin-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .admin-panel h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .task-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .task-form input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+
+        .task-form button {
+            padding: 10px 15px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .task-form button:hover {
+            background: #764ba2;
+        }
+
+        .task-list {
+            list-style: none;
+        }
+
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .task-item.completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        .task-actions button {
+            margin-left: 5px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .edit-btn {
+            background: #ffa500;
+            color: white;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .complete-btn {
+            background: #28a745;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -130,6 +212,7 @@
         <header>
             <h1>📚 Programación FULLSTACK</h1>
             <p class="subtitle">Índice de Proyectos y Ejercicios - UTU 2026</p>
+            <button id="adminBtn" onclick="window.location.href='/auth/github'" style="position: absolute; top: 20px; right: 20px; padding: 10px 15px; background: #667eea; color: white; border: none; border-radius: 6px; cursor: pointer;">Iniciar sesión con GitHub</button>
         </header>
 
         <!-- Ejercicios completados -->
@@ -144,9 +227,32 @@
             <div style="text-align: center; color: white; padding: 40px;">Cargando...</div>
         </div>
 
+        <!-- Tareas -->
+        <h2 class="section-title">📋 Tareas</h2>
+        <div class="grid" id="tasksGrid">
+            <div style="text-align: center; color: white; padding: 40px;">Cargando...</div>
+        </div>
+
         <footer>
             <p>&copy; 2026 - Programación FULLSTACK | UTU</p>
         </footer>
+
+        <!-- Panel de Administración -->
+        <div class="admin-panel" id="adminPanel">
+            <h3>📋 Gestión de Tareas</h3>
+            <div class="task-form">
+                <input type="text" id="taskTitle" placeholder="Título de la tarea">
+                <input type="text" id="taskDescription" placeholder="Descripción">
+                <input type="text" id="taskEmoji" placeholder="Emoji (opcional)" value="📋">
+                <button onclick="addTask()">Agregar</button>
+            </div>
+            <ul class="task-list" id="taskList"></ul>
+            <h4>Guardar en GitHub</h4>
+            <input type="text" id="githubOwner" placeholder="Owner del repo">
+            <input type="text" id="githubRepo" placeholder="Nombre del repo">
+            <button onclick="saveToGitHub()">Guardar en GitHub</button>
+            <button onclick="signOut()">Cerrar Sesión</button>
+        </div>
     </div>
 
     <script>
@@ -156,13 +262,16 @@
             .then(data => {
                 const completedGrid = document.getElementById('completedGrid');
                 const pendingGrid = document.getElementById('pendingGrid');
+                const tasksGrid = document.getElementById('tasksGrid');
                 
                 completedGrid.innerHTML = '';
                 pendingGrid.innerHTML = '';
+                tasksGrid.innerHTML = '';
 
                 // Filtrar proyectos completados y pendientes
                 const completed = data.projects.filter(p => p.type === 'completed');
                 const pending = data.projects.filter(p => p.type === 'pending');
+                const tasks = data.tasks || [];
 
                 // Renderizar completados
                 if (completed.length > 0) {
@@ -180,6 +289,15 @@
                     });
                 } else {
                     pendingGrid.innerHTML = '<div style="text-align: center; color: white; padding: 40px;">¡Todos los ejercicios completados!</div>';
+                }
+
+                // Renderizar tareas
+                if (tasks.length > 0) {
+                    tasks.forEach(task => {
+                        tasksGrid.innerHTML += createTaskCard(task);
+                    });
+                } else {
+                    tasksGrid.innerHTML = '<div style="text-align: center; color: white; padding: 40px;">No hay tareas</div>';
                 }
             })
             .catch(error => {
@@ -224,6 +342,169 @@
                 </div>
             `;
         }
+
+        // Función para crear una tarjeta de tarea
+        function createTaskCard(task) {
+            return `
+                <div class="card">
+                    <div class="card-header">${task.emoji || '📋'} ${task.title}</div>
+                    <div class="card-content">
+                        <p>${task.description || 'Sin descripción'}</p>
+                        <p><strong>Estado:</strong> ${task.completed ? 'Completada' : 'Pendiente'}</p>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+
+    <script>
+        // Sistema de autenticación con GitHub y gestión de tareas
+        let isAuthenticated = false;
+        let githubToken = '';
+        let currentTasks = [];
+
+        // Verificar autenticación desde URL
+        function checkAuth() {
+            const urlParams = new URLSearchParams(window.location.search);
+            githubToken = urlParams.get('token');
+            const email = urlParams.get('email');
+            if (githubToken && email) {
+                isAuthenticated = true;
+                document.getElementById('adminPanel').style.display = 'block';
+                document.getElementById('adminBtn').style.display = 'none';
+                // Limpiar URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+                loadTasks();
+            }
+        }
+
+        // Cerrar sesión
+        function signOut() {
+            window.location.href = '/logout';
+        }
+
+        // Cargar tareas desde localStorage (para edición)
+        function loadTasks() {
+            currentTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = '';
+            currentTasks.forEach((task, index) => {
+                const li = document.createElement('li');
+                li.className = 'task-item' + (task.completed ? ' completed' : '');
+                li.innerHTML = `
+                    <span>${task.emoji || '📋'} ${task.title}: ${task.description}</span>
+                    <div class="task-actions">
+                        <button class="complete-btn" onclick="toggleComplete(${index})">${task.completed ? 'Desmarcar' : 'Completar'}</button>
+                        <button class="edit-btn" onclick="editTask(${index})">Editar</button>
+                        <button class="delete-btn" onclick="deleteTask(${index})">Eliminar</button>
+                    </div>
+                `;
+                taskList.appendChild(li);
+            });
+        }
+
+        // Agregar tarea
+        function addTask() {
+            if (!isAuthenticated) return;
+            const title = document.getElementById('taskTitle').value.trim();
+            const description = document.getElementById('taskDescription').value.trim();
+            const emoji = document.getElementById('taskEmoji').value.trim();
+            if (title) {
+                currentTasks.push({ title, description, emoji, completed: false });
+                localStorage.setItem('tasks', JSON.stringify(currentTasks));
+                document.getElementById('taskTitle').value = '';
+                document.getElementById('taskDescription').value = '';
+                document.getElementById('taskEmoji').value = '📋';
+                loadTasks();
+            }
+        }
+
+        // Editar tarea
+        function editTask(index) {
+            if (!isAuthenticated) return;
+            const task = currentTasks[index];
+            const newTitle = prompt('Editar título:', task.title);
+            const newDescription = prompt('Editar descripción:', task.description);
+            const newEmoji = prompt('Editar emoji:', task.emoji);
+            if (newTitle !== null && newTitle.trim()) {
+                currentTasks[index] = { ...task, title: newTitle.trim(), description: newDescription.trim(), emoji: newEmoji.trim() };
+                localStorage.setItem('tasks', JSON.stringify(currentTasks));
+                loadTasks();
+            }
+        }
+
+        // Eliminar tarea
+        function deleteTask(index) {
+            if (!isAuthenticated) return;
+            if (confirm('¿Eliminar esta tarea?')) {
+                currentTasks.splice(index, 1);
+                localStorage.setItem('tasks', JSON.stringify(currentTasks));
+                loadTasks();
+            }
+        }
+
+        // Alternar completado
+        function toggleComplete(index) {
+            if (!isAuthenticated) return;
+            currentTasks[index].completed = !currentTasks[index].completed;
+            localStorage.setItem('tasks', JSON.stringify(currentTasks));
+            loadTasks();
+        }
+
+        // Guardar en GitHub
+        async function saveToGitHub() {
+            if (!isAuthenticated || !githubToken) return;
+            const owner = document.getElementById('githubOwner').value.trim();
+            const repo = document.getElementById('githubRepo').value.trim();
+            if (!owner || !repo) {
+                alert('Completa los campos de GitHub.');
+                return;
+            }
+
+            try {
+                // Obtener el archivo actual
+                const getResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/docs/projects.json`, {
+                    headers: {
+                        'Authorization': `token ${githubToken}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                if (!getResponse.ok) throw new Error('Error obteniendo el archivo');
+                const fileData = await getResponse.json();
+
+                // Parsear contenido actual
+                const currentContent = JSON.parse(atob(fileData.content));
+                currentContent.tasks = currentTasks;
+
+                // Actualizar archivo
+                const updateResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/docs/projects.json`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${githubToken}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: 'Actualizar tareas',
+                        content: btoa(JSON.stringify(currentContent, null, 2)),
+                        sha: fileData.sha
+                    })
+                });
+                if (updateResponse.ok) {
+                    alert('Tareas guardadas en GitHub exitosamente.');
+                } else {
+                    throw new Error('Error guardando en GitHub');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al guardar en GitHub: ' + error.message);
+            }
+        }
+
+        // Inicializar al cargar
+        window.onload = function() {
+            checkAuth();
+        };
     </script>
 </body>
 </html>
