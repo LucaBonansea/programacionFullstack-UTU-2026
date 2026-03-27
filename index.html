@@ -8,182 +8,76 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #0a0c0f; --surface: #111418; --surface2: #181c22;
-      --border: #1f2530; --accent: #00e5a0; --accent2: #0099ff;
-      --accent3: #ff6b35; --text: #c8d0dc; --text-dim: #4a5568;
-      --text-bright: #f0f4f8; --locked: #0e1013;
+      --bg:#0a0c0f; --surface:#111418; --surface2:#181c22; --border:#1f2530;
+      --accent:#00e5a0; --accent2:#0099ff; --accent3:#ff6b35;
+      --text:#c8d0dc; --text-dim:#4a5568; --text-bright:#f0f4f8;
+      --locked:#0e1013; --img-accent:#f59e0b;
     }
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--bg); color: var(--text);
-      font-family: 'JetBrains Mono', monospace;
-      min-height: 100vh; overflow-x: hidden;
-    }
+    html { scroll-behavior:smooth; }
+    body { background:var(--bg); color:var(--text); font-family:'JetBrains Mono',monospace; min-height:100vh; overflow-x:hidden; }
     body::before {
-      content: ''; position: fixed; inset: 0;
-      background-image: linear-gradient(var(--border) 1px, transparent 1px),
-        linear-gradient(90deg, var(--border) 1px, transparent 1px);
-      background-size: 40px 40px; opacity: 0.2;
-      pointer-events: none; z-index: 0;
+      content:''; position:fixed; inset:0;
+      background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
+      background-size:40px 40px; opacity:0.2; pointer-events:none; z-index:0;
     }
     .container { position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:0 28px; }
-
-    /* HEADER */
     header { padding:56px 0 40px; border-bottom:1px solid var(--border); }
     .header-inner { display:flex; align-items:flex-start; justify-content:space-between; gap:24px; flex-wrap:wrap; }
-    .prompt-line {
-      font-size:11px; color:var(--text-dim); letter-spacing:0.08em;
-      margin-bottom:14px; display:flex; align-items:center; gap:8px;
-    }
-    .prompt-line::before {
-      content:''; display:inline-block; width:6px; height:6px;
-      border-radius:50%; background:var(--accent);
-      box-shadow:0 0 8px var(--accent); animation:blink 2s infinite;
-    }
+    .prompt-line { font-size:11px; color:var(--text-dim); letter-spacing:0.08em; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+    .prompt-line::before { content:''; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 8px var(--accent); animation:blink 2s infinite; }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-    h1 {
-      font-family:'Syne',sans-serif; font-size:clamp(28px,5vw,52px);
-      font-weight:800; color:var(--text-bright); line-height:1.1; letter-spacing:-0.02em;
-    }
+    h1 { font-family:'Syne',sans-serif; font-size:clamp(28px,5vw,52px); font-weight:800; color:var(--text-bright); line-height:1.1; letter-spacing:-0.02em; }
     h1 span.accent { color:var(--accent); }
     h1 span.dim { color:var(--text-dim); font-weight:400; }
     .subtitle { margin-top:12px; font-size:13px; color:var(--text-dim); line-height:1.6; }
     .header-meta { display:flex; flex-direction:column; align-items:flex-end; gap:10px; }
-    .badge {
-      display:inline-flex; align-items:center; gap:6px;
-      padding:5px 12px; border-radius:4px; font-size:11px;
-      font-weight:600; letter-spacing:0.06em; border:1px solid;
-    }
+    .badge { display:inline-flex; align-items:center; gap:6px; padding:5px 12px; border-radius:4px; font-size:11px; font-weight:600; letter-spacing:0.06em; border:1px solid; }
     .badge-green  { border-color:var(--accent);  color:var(--accent);  background:rgba(0,229,160,0.06); }
     .badge-blue   { border-color:var(--accent2); color:var(--accent2); background:rgba(0,153,255,0.06); }
     .badge-orange { border-color:var(--accent3); color:var(--accent3); background:rgba(255,107,53,0.06); }
-    .github-link {
-      display:inline-flex; align-items:center; gap:8px; padding:9px 18px;
-      border-radius:6px; border:1px solid var(--border); background:var(--surface);
-      color:var(--text); text-decoration:none; font-size:12px; font-weight:600; transition:all .2s;
-    }
+    .github-link { display:inline-flex; align-items:center; gap:8px; padding:9px 18px; border-radius:6px; border:1px solid var(--border); background:var(--surface); color:var(--text); text-decoration:none; font-size:12px; font-weight:600; transition:all .2s; }
     .github-link:hover { border-color:var(--accent); color:var(--accent); background:rgba(0,229,160,0.04); }
     .github-link svg { width:15px; height:15px; fill:currentColor; }
-
-    /* STATS */
-    .stats-bar {
-      display:flex; margin:36px 0; border:1px solid var(--border);
-      border-radius:8px; overflow:hidden; background:var(--surface);
-    }
+    .stats-bar { display:flex; margin:36px 0; border:1px solid var(--border); border-radius:8px; overflow:hidden; background:var(--surface); }
     .stat-item { flex:1; padding:18px 20px; border-right:1px solid var(--border); }
     .stat-item:last-child { border-right:none; }
     .stat-label { font-size:10px; color:var(--text-dim); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px; }
     .stat-value { font-size:22px; font-weight:700; color:var(--text-bright); font-family:'Syne',sans-serif; }
     .stat-value small { font-size:12px; color:var(--text-dim); font-family:'JetBrains Mono',monospace; font-weight:400; }
-
-    /* SECTION */
     .section-header { display:flex; align-items:center; gap:14px; margin-bottom:16px; }
     .section-title { font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-dim); white-space:nowrap; }
     .section-line { flex:1; height:1px; background:var(--border); }
-    .last-updated {
-      font-size:10px; color:var(--text-dim);
-      display:flex; align-items:center; gap:6px; margin-bottom:22px;
-    }
-    .last-updated::before {
-      content:''; width:5px; height:5px; border-radius:50%;
-      background:var(--accent); flex-shrink:0;
-    }
-
-    /* LOADING / ERROR */
-    .loading-state {
-      grid-column:1/-1; display:flex; flex-direction:column;
-      align-items:center; justify-content:center;
-      gap:16px; padding:60px 0; color:var(--text-dim); font-size:12px;
-    }
-    .spinner {
-      width:32px; height:32px; border:2px solid var(--border);
-      border-top-color:var(--accent); border-radius:50%;
-      animation:spin .7s linear infinite;
-    }
-    @keyframes spin { to { transform:rotate(360deg); } }
-    .error-state {
-      grid-column:1/-1; padding:24px;
-      border:1px solid rgba(255,107,53,0.3); border-radius:8px;
-      background:rgba(255,107,53,0.05); color:var(--accent3);
-      font-size:12px; line-height:1.8;
-    }
-
-    /* GRID */
-    .exercises-grid {
-      display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr));
-      gap:12px; margin-bottom:60px; min-height:200px; align-items:start;
-    }
-
-    /* CARD */
-    .card {
-      background:var(--surface); border:1px solid var(--border);
-      border-radius:8px; display:flex; flex-direction:column;
-      position:relative; overflow:hidden;
-      animation:fadeUp .35s ease both;
-      transition:border-color .2s, box-shadow .2s;
-    }
+    .last-updated { font-size:10px; color:var(--text-dim); display:flex; align-items:center; gap:6px; margin-bottom:22px; }
+    .last-updated::before { content:''; width:5px; height:5px; border-radius:50%; background:var(--accent); flex-shrink:0; }
+    .loading-state { grid-column:1/-1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; padding:60px 0; color:var(--text-dim); font-size:12px; }
+    .spinner { width:32px; height:32px; border:2px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .7s linear infinite; }
+    @keyframes spin { to{transform:rotate(360deg)} }
+    .error-state { grid-column:1/-1; padding:24px; border:1px solid rgba(255,107,53,0.3); border-radius:8px; background:rgba(255,107,53,0.05); color:var(--accent3); font-size:12px; line-height:1.8; }
+    .exercises-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:12px; margin-bottom:60px; min-height:200px; align-items:start; }
+    .card { background:var(--surface); border:1px solid var(--border); border-radius:8px; display:flex; flex-direction:column; position:relative; overflow:hidden; animation:fadeUp .35s ease both; transition:border-color .2s,box-shadow .2s; }
     @keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
-
     .card-inner { padding:20px 22px; display:flex; flex-direction:column; gap:12px; }
-
-    .card::before {
-      content:''; position:absolute; top:0; left:0; right:0; height:2px;
-      opacity:0; transition:opacity .2s;
-    }
-    .card.available::before  { background:linear-gradient(90deg,var(--accent),var(--accent2)); }
-    .card.multi::before      { background:linear-gradient(90deg,var(--accent),#a78bfa); }
-    .card.github-only::before{ background:linear-gradient(90deg,var(--accent2),#7c5cbf); }
-
-    .card.available:hover,
-    .card.multi:hover,
-    .card.github-only:hover {
-      border-color:rgba(0,229,160,0.3);
-      box-shadow:0 8px 32px rgba(0,0,0,0.5);
-    }
-    .card.available:hover::before,
-    .card.multi:hover::before,
-    .card.github-only:hover::before { opacity:1; }
-
+    .card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; opacity:0; transition:opacity .2s; }
+    .card.available::before   { background:linear-gradient(90deg,var(--accent),var(--accent2)); }
+    .card.multi::before       { background:linear-gradient(90deg,var(--accent),#a78bfa); }
+    .card.github-only::before { background:linear-gradient(90deg,var(--accent2),#7c5cbf); }
+    .card.available:hover,.card.multi:hover,.card.github-only:hover { border-color:rgba(0,229,160,0.3); box-shadow:0 8px 32px rgba(0,0,0,0.5); }
+    .card.available:hover::before,.card.multi:hover::before,.card.github-only:hover::before { opacity:1; }
     .card.locked { background:var(--locked); border-color:#13161b; opacity:0.5; cursor:not-allowed; }
-    .card.available, .card.github-only { cursor:pointer; }
-
     .card:not(.locked):hover .card-number { color:var(--accent); }
-    .card:not(.locked):hover .card-arrow {
-      border-color:var(--accent); color:var(--accent); background:rgba(0,229,160,0.08);
-    }
-
+    .card:not(.locked):hover .card-arrow { border-color:var(--accent); color:var(--accent); background:rgba(0,229,160,0.08); }
     .card-top { display:flex; align-items:center; justify-content:space-between; }
-    .card-number {
-      font-family:'Syne',sans-serif; font-size:30px; font-weight:800;
-      color:var(--surface2); line-height:1; transition:color .2s;
-    }
-    .card-arrow {
-      width:26px; height:26px; border-radius:50%; border:1px solid var(--border);
-      display:flex; align-items:center; justify-content:center;
-      color:var(--text-dim); font-size:13px; transition:all .2s; flex-shrink:0;
-    }
+    .card-number { font-family:'Syne',sans-serif; font-size:30px; font-weight:800; color:var(--surface2); line-height:1; transition:color .2s; }
+    .card-arrow { width:26px; height:26px; border-radius:50%; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:13px; transition:all .2s; flex-shrink:0; }
     .card-title { font-size:12px; font-weight:600; color:var(--text-bright); line-height:1.4; }
     .card.locked .card-title { color:var(--text-dim); }
-    .card-commit {
-      font-size:10px; color:var(--text-dim); overflow:hidden;
-      text-overflow:ellipsis; white-space:nowrap;
-      display:flex; align-items:center; gap:6px;
-    }
+    .card-commit { font-size:10px; color:var(--text-dim); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display:flex; align-items:center; gap:6px; }
     .commit-hash { color:var(--accent2); flex-shrink:0; }
-    .card-footer {
-      display:flex; align-items:center;
-      justify-content:space-between; gap:8px; margin-top:auto;
-    }
+    .card-footer { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:auto; }
     .card-path { font-size:10px; color:var(--text-dim); }
     .card-path .dir { color:var(--accent2); }
     .card-date { font-size:10px; color:var(--text-dim); flex-shrink:0; }
-
-    /* CHIPS */
-    .chip {
-      display:inline-flex; align-items:center; gap:4px;
-      padding:2px 8px; border-radius:20px; font-size:9px;
-      font-weight:700; letter-spacing:0.06em; text-transform:uppercase; flex-shrink:0;
-    }
+    .chip { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:20px; font-size:9px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; flex-shrink:0; }
     .chip-live   { background:rgba(0,229,160,0.12);   color:var(--accent);  border:1px solid rgba(0,229,160,0.25); }
     .chip-multi  { background:rgba(167,139,250,0.12); color:#a78bfa;        border:1px solid rgba(167,139,250,0.25); }
     .chip-repo   { background:rgba(0,153,255,0.10);   color:var(--accent2); border:1px solid rgba(0,153,255,0.2); }
@@ -191,57 +85,50 @@
     .chip-live::before  { content:''; width:5px;height:5px;border-radius:50%;background:var(--accent);animation:blink 1.8s infinite; }
     .chip-multi::before { content:''; width:5px;height:5px;border-radius:50%;background:#a78bfa; }
     .chip-repo::before  { content:''; width:5px;height:5px;border-radius:50%;background:var(--accent2); }
-
-    /* EXPANDABLE LIST */
-    .html-list {
-      border-top:1px solid var(--border); overflow:hidden;
-      max-height:0; transition:max-height .35s cubic-bezier(0.4,0,0.2,1);
-    }
-    .html-list.open { max-height:600px; }
-    .html-list-inner { padding:10px 14px 14px; display:flex; flex-direction:column; gap:4px; }
-    .html-list-label {
-      font-size:9px; letter-spacing:0.12em; text-transform:uppercase;
-      color:var(--text-dim); margin-bottom:6px; padding:0 8px;
-    }
-    .html-item {
-      display:flex; align-items:center; gap:8px; padding:7px 10px;
-      border-radius:5px; text-decoration:none; color:var(--text);
-      font-size:11px; transition:background .15s,color .15s;
-      border:1px solid transparent;
-    }
-    .html-item:hover {
-      background:rgba(0,229,160,0.06);
-      border-color:rgba(0,229,160,0.15); color:var(--accent);
-    }
+    .expand-section { border-top:1px solid var(--border); }
+    .collapsible { overflow:hidden; max-height:0; transition:max-height .38s cubic-bezier(0.4,0,0.2,1); }
+    .collapsible.open { max-height:800px; }
+    .collapsible-inner { padding:12px 14px 14px; display:flex; flex-direction:column; gap:4px; }
+    .list-label { font-size:9px; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px; padding:0 8px; }
+    .html-item { display:flex; align-items:center; gap:8px; padding:7px 10px; border-radius:5px; text-decoration:none; color:var(--text); font-size:11px; transition:background .15s,color .15s; border:1px solid transparent; }
+    .html-item:hover { background:rgba(0,229,160,0.06); border-color:rgba(0,229,160,0.15); color:var(--accent); }
     .html-item-icon { font-size:10px; opacity:0.4; flex-shrink:0; }
     .html-item-name { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-    .html-item-path { font-size:9px; color:var(--text-dim); flex-shrink:0; max-width:120px; overflow:hidden; text-overflow:ellipsis; }
+    .html-item-path { font-size:9px; color:var(--text-dim); flex-shrink:0; max-width:110px; overflow:hidden; text-overflow:ellipsis; }
     .html-item-status { font-size:9px; flex-shrink:0; }
-
-    .expand-btn {
-      width:100%; padding:9px 22px; background:transparent;
-      border:none; border-top:1px solid var(--border);
-      color:var(--text-dim); font-family:'JetBrains Mono',monospace;
-      font-size:10px; cursor:pointer; display:flex; align-items:center;
-      justify-content:space-between; gap:8px;
-      transition:background .15s,color .15s;
-    }
+    .img-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(90px,1fr)); gap:7px; }
+    .img-thumb { aspect-ratio:4/3; border-radius:5px; overflow:hidden; border:1px solid var(--border); cursor:pointer; transition:border-color .2s,transform .2s; background:var(--surface2); position:relative; }
+    .img-thumb:hover { border-color:var(--img-accent); transform:scale(1.04); }
+    .img-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+    .img-thumb .img-label { position:absolute; bottom:0; left:0; right:0; padding:3px 5px; font-size:8px; color:#fff; background:linear-gradient(transparent,rgba(0,0,0,0.8)); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; opacity:0; transition:opacity .2s; }
+    .img-thumb:hover .img-label { opacity:1; }
+    .expand-btn { width:100%; padding:8px 22px; background:transparent; border:none; border-top:1px solid var(--border); color:var(--text-dim); font-family:'JetBrains Mono',monospace; font-size:10px; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:8px; transition:background .15s,color .15s; }
     .expand-btn:hover { background:rgba(255,255,255,0.02); color:var(--text); }
+    .expand-btn.img-btn:hover { color:var(--img-accent); }
     .expand-btn .arrow { transition:transform .3s; display:inline-block; }
     .expand-btn.open .arrow { transform:rotate(180deg); }
-
-    /* FOOTER */
+    .lightbox { display:none; position:fixed; inset:0; z-index:1000; background:rgba(0,0,0,0.93); backdrop-filter:blur(8px); align-items:center; justify-content:center; padding:24px; }
+    .lightbox.active { display:flex; }
+    .lightbox-wrap { position:relative; max-width:90vw; max-height:90vh; display:flex; flex-direction:column; align-items:center; gap:12px; }
+    .lightbox-img { max-width:100%; max-height:76vh; border-radius:6px; border:1px solid var(--border); object-fit:contain; }
+    .lightbox-meta { display:flex; align-items:center; gap:16px; }
+    .lightbox-name { font-size:11px; color:var(--text-dim); }
+    .lightbox-counter { font-size:10px; color:var(--text-dim); }
+    .lightbox-close { position:absolute; top:-12px; right:-12px; width:30px; height:30px; border-radius:50%; background:var(--surface); border:1px solid var(--border); color:var(--text); font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+    .lightbox-close:hover { background:var(--accent3); border-color:var(--accent3); color:#fff; }
+    .lightbox-nav { display:flex; gap:8px; }
+    .lightbox-nav button { padding:6px 16px; border-radius:5px; border:1px solid var(--border); background:var(--surface); color:var(--text); font-family:'JetBrains Mono',monospace; font-size:11px; cursor:pointer; transition:all .2s; }
+    .lightbox-nav button:hover { border-color:var(--accent); color:var(--accent); }
     footer { border-top:1px solid var(--border); padding:28px 0; }
     .footer-inner { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
     .footer-text { font-size:11px; color:var(--text-dim); }
     .footer-text a { color:var(--accent); text-decoration:none; }
     .footer-text a:hover { text-decoration:underline; }
-
-    @media (max-width:640px) {
-      .stats-bar { flex-direction:column; }
-      .stat-item { border-right:none; border-bottom:1px solid var(--border); }
-      .stat-item:last-child { border-bottom:none; }
-      .header-meta { align-items:flex-start; }
+    @media(max-width:640px){
+      .stats-bar{flex-direction:column;}
+      .stat-item{border-right:none;border-bottom:1px solid var(--border);}
+      .stat-item:last-child{border-bottom:none;}
+      .header-meta{align-items:flex-start;}
     }
   </style>
 </head>
@@ -253,10 +140,7 @@
       <div>
         <div class="prompt-line">~/programacionFullstack-UTU-2026 · main</div>
         <h1>Fullstack<span class="accent">.</span><br/><span class="dim">UTU</span> 2026</h1>
-        <p class="subtitle">
-          Ejercicios y trabajos prácticos<br/>
-          Programación Fullstack · <span style="color:var(--accent)">LucaBonansea</span>
-        </p>
+        <p class="subtitle">Ejercicios y trabajos prácticos<br/>Programación Fullstack · <span style="color:var(--accent)">LucaBonansea</span></p>
       </div>
       <div class="header-meta">
         <a class="github-link" href="https://github.com/LucaBonansea/programacionFullstack-UTU-2026" target="_blank">
@@ -272,22 +156,10 @@
   </header>
 
   <div class="stats-bar">
-    <div class="stat-item">
-      <div class="stat-label">Ejercicios</div>
-      <div class="stat-value" id="stat-count">— <small>/ total</small></div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-label">Con contenido</div>
-      <div class="stat-value" id="stat-live">— <small>live</small></div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-label">Páginas HTML</div>
-      <div class="stat-value" id="stat-pages">— <small>total</small></div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-label">Último commit</div>
-      <div class="stat-value" id="stat-commit" style="font-size:13px;line-height:1.3">—</div>
-    </div>
+    <div class="stat-item"><div class="stat-label">Ejercicios</div><div class="stat-value" id="stat-count">— <small>/ total</small></div></div>
+    <div class="stat-item"><div class="stat-label">Con live</div><div class="stat-value" id="stat-live">— <small>live</small></div></div>
+    <div class="stat-item"><div class="stat-label">Páginas HTML</div><div class="stat-value" id="stat-pages">— <small>total</small></div></div>
+    <div class="stat-item"><div class="stat-label">Imágenes</div><div class="stat-value" id="stat-imgs">— <small>total</small></div></div>
   </div>
 
   <div class="section-header">
@@ -299,282 +171,207 @@
   <div id="last-updated" class="last-updated" style="display:none"></div>
 
   <div class="exercises-grid" id="grid">
-    <div class="loading-state">
-      <div class="spinner"></div>
-      <span>Escaneando repositorio...</span>
-    </div>
+    <div class="loading-state"><div class="spinner"></div><span>Escaneando repositorio...</span></div>
   </div>
 
   <footer>
     <div class="footer-inner">
-      <span class="footer-text">
-        <a href="https://github.com/LucaBonansea/programacionFullstack-UTU-2026" target="_blank">LucaBonansea/programacionFullstack-UTU-2026</a>
-        · Programación Fullstack UTU 2026
-      </span>
+      <span class="footer-text"><a href="https://github.com/LucaBonansea/programacionFullstack-UTU-2026" target="_blank">LucaBonansea/programacionFullstack-UTU-2026</a> · Programación Fullstack UTU 2026</span>
       <span class="footer-text" id="footer-lang">HTML + CSS</span>
     </div>
   </footer>
+</div>
 
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="if(event.target===this)closeLb()">
+  <div class="lightbox-wrap">
+    <button class="lightbox-close" onclick="closeLb()">✕</button>
+    <img class="lightbox-img" id="lb-img" src="" alt=""/>
+    <div class="lightbox-meta">
+      <div class="lightbox-name" id="lb-name"></div>
+      <div class="lightbox-counter" id="lb-counter"></div>
+    </div>
+    <div class="lightbox-nav">
+      <button onclick="lbMove(-1)">← Anterior</button>
+      <button onclick="lbMove(1)">Siguiente →</button>
+    </div>
+  </div>
 </div>
 
 <script>
-  const OWNER   = 'LucaBonansea';
-  const REPO    = 'programacionFullstack-UTU-2026';
-  const BASE    = `https://api.github.com/repos/${OWNER}/${REPO}`;
-  const PAGES   = `https://${OWNER}.github.io/${REPO}`;
-  const HEADERS = { Accept: 'application/vnd.github.v3+json' };
+const OWNER='LucaBonansea', REPO='programacionFullstack-UTU-2026';
+const BASE=`https://api.github.com/repos/${OWNER}/${REPO}`;
+const PAGES=`https://${OWNER}.github.io/${REPO}`;
+const RAW=`https://raw.githubusercontent.com/${OWNER}/${REPO}/main`;
+const H={Accept:'application/vnd.github.v3+json'};
+const IMG_EXT=['.png','.jpg','.jpeg','.gif','.svg','.webp','.bmp'];
 
-  function timeAgo(d) {
-    const s = (Date.now() - new Date(d)) / 1000;
-    if (s < 60)    return 'hace un momento';
-    if (s < 3600)  return `hace ${Math.floor(s/60)}m`;
-    if (s < 86400) return `hace ${Math.floor(s/3600)}h`;
-    if (s < 604800)return `hace ${Math.floor(s/86400)}d`;
-    return new Date(d).toLocaleDateString('es-UY',{day:'numeric',month:'short'});
-  }
+function timeAgo(d){const s=(Date.now()-new Date(d))/1000;if(s<60)return'hace un momento';if(s<3600)return`hace ${Math.floor(s/60)}m`;if(s<86400)return`hace ${Math.floor(s/3600)}h`;if(s<604800)return`hace ${Math.floor(s/86400)}d`;return new Date(d).toLocaleDateString('es-UY',{day:'numeric',month:'short'});}
+function pad(n){return String(n).padStart(2,'0');}
+function isImg(n){return IMG_EXT.some(e=>n.toLowerCase().endsWith(e));}
+async function api(p){const r=await fetch(BASE+p,{headers:H});if(!r.ok)throw new Error(`API ${r.status}`);return r.json();}
 
-  function pad(n) { return String(n).padStart(2,'0'); }
+async function scan(path){
+  let htmls=[],imgs=[];
+  try{
+    const items=await api(`/contents/${path}`);
+    await Promise.all(items.map(async item=>{
+      const l=item.name.toLowerCase();
+      if(item.type==='file'){
+        if(l.endsWith('.html')) htmls.push({name:item.name,path:item.path,ghUrl:item.html_url});
+        else if(isImg(l)) imgs.push({name:item.name,path:item.path,rawUrl:`${RAW}/${item.path}`,ghUrl:item.html_url});
+      } else if(item.type==='dir'){
+        const s=await scan(item.path);
+        htmls=htmls.concat(s.htmls); imgs=imgs.concat(s.imgs);
+      }
+    }));
+  }catch(_){}
+  return{htmls,imgs};
+}
 
-  async function apiGet(path) {
-    const r = await fetch(BASE + path, { headers: HEADERS });
-    if (!r.ok) throw new Error(`API ${r.status}: ${r.statusText}`);
-    return r.json();
-  }
+async function chkLive(u){try{const r=await fetch(u,{method:'HEAD'});return r.ok;}catch{return false;}}
+function pgUrl(p){return`${PAGES}/${p}`;}
 
-  // Busca recursivamente todos los .html dentro de un path del repo
-  async function findHtmlFiles(repoPath) {
-    let results = [];
-    try {
-      const items = await apiGet(`/contents/${repoPath}`);
-      await Promise.all(items.map(async item => {
-        if (item.type === 'file' && item.name.toLowerCase().endsWith('.html')) {
-          results.push({ name: item.name, path: item.path, ghUrl: item.html_url });
-        } else if (item.type === 'dir') {
-          const sub = await findHtmlFiles(item.path);
-          results = results.concat(sub);
-        }
-      }));
-    } catch(_) {}
-    return results;
-  }
+// Lightbox
+let LB_IMGS=[],LB_IDX=0;
+function openLb(imgs,idx){LB_IMGS=imgs;LB_IDX=idx;renderLb();document.getElementById('lightbox').classList.add('active');document.addEventListener('keydown',lbKey);}
+function closeLb(){document.getElementById('lightbox').classList.remove('active');document.removeEventListener('keydown',lbKey);}
+function lbMove(d){LB_IDX=(LB_IDX+d+LB_IMGS.length)%LB_IMGS.length;renderLb();}
+function lbKey(e){if(e.key==='ArrowRight')lbMove(1);if(e.key==='ArrowLeft')lbMove(-1);if(e.key==='Escape')closeLb();}
+function renderLb(){const i=LB_IMGS[LB_IDX];document.getElementById('lb-img').src=i.rawUrl;document.getElementById('lb-name').textContent=i.name;document.getElementById('lb-counter').textContent=`${LB_IDX+1} / ${LB_IMGS.length}`;}
+window.openLb=openLb; window.closeLb=closeLb; window.lbMove=lbMove;
 
-  async function checkLive(url) {
-    try {
-      const r = await fetch(url, { method: 'HEAD' });
-      return r.ok;
-    } catch { return false; }
-  }
+// Toggle expand
+function toggleSec(btn){
+  const panel=btn.previousElementSibling;
+  const open=panel.classList.toggle('open');
+  btn.classList.toggle('open',open);
+  btn.querySelector('.arrow').textContent=open?'▲':'▼';
+  const lo=btn.dataset.lo, lc=btn.dataset.lc;
+  if(lo&&lc) btn.querySelector('.btn-label').textContent=open?lo:lc;
+}
+window.toggleSec=toggleSec;
 
-  function pagesUrl(repoPath) {
-    return `${PAGES}/${repoPath}`;
-  }
+async function init(){
+  const grid=document.getElementById('grid');
+  try{
+    const [contents,commits]=await Promise.all([api('/contents'),api('/commits?per_page=1')]);
+    const folders=contents.filter(f=>f.type==='dir'&&/^ejercicio-\d+$/i.test(f.name)).sort((a,b)=>parseInt(a.name.split('-')[1])-parseInt(b.name.split('-')[1]));
 
-  function toggleList(btn) {
-    const list = btn.previousElementSibling;
-    const open = list.classList.toggle('open');
-    btn.classList.toggle('open', open);
-    btn.querySelector('.arrow').textContent = open ? '▲' : '▼';
-    btn.querySelector('.btn-label').textContent = open ? 'Ocultar páginas' : `Ver páginas`;
-  }
-  window.toggleList = toggleList;
+    document.getElementById('stat-count').innerHTML=`${folders.length} <small>/ total</small>`;
+    document.getElementById('badge-count').textContent=`${folders.length} ejercicios`;
+    if(commits.length){const m=commits[0].commit.message.split('\n')[0]; /* stat-commit removed */}
 
-  async function init() {
-    const grid = document.getElementById('grid');
+    try{
+      const langs=await api('/languages');
+      const tot=Object.values(langs).reduce((a,b)=>a+b,0);
+      if(langs.HTML)document.getElementById('badge-html').textContent=`● HTML ${((langs.HTML/tot)*100).toFixed(1)}%`;
+      if(langs.CSS) document.getElementById('badge-css').textContent =`● CSS ${((langs.CSS/tot)*100).toFixed(1)}%`;
+      document.getElementById('footer-lang').textContent=Object.keys(langs).join(' + ');
+    }catch(_){}
 
-    try {
-      const [contents, commits] = await Promise.all([
-        apiGet('/contents'),
-        apiGet('/commits?per_page=1')
-      ]);
+    const lu=document.getElementById('last-updated');
+    lu.style.display='flex';
+    lu.textContent=`Escaneado en tiempo real · ${new Date().toLocaleTimeString('es-UY')}`;
 
-      // Filtrar y ordenar carpetas ejercicio-N
-      const folders = contents
-        .filter(f => f.type === 'dir' && /^ejercicio-\d+$/i.test(f.name))
-        .sort((a,b) => parseInt(a.name.split('-')[1]) - parseInt(b.name.split('-')[1]));
+    const [commitInfos,scanResults]=await Promise.all([
+      Promise.all(folders.map(f=>api(`/commits?path=${encodeURIComponent(f.name)}&per_page=1`).then(d=>d[0]||null).catch(()=>null))),
+      Promise.all(folders.map(f=>scan(f.name)))
+    ]);
 
-      document.getElementById('stat-count').innerHTML    = `${folders.length} <small>/ total</small>`;
-      document.getElementById('badge-count').textContent = `${folders.length} ejercicios`;
+    const allHtmls=scanResults.flatMap(s=>s.htmls);
+    const liveChecks=await Promise.all(allHtmls.map(h=>chkLive(pgUrl(h.path))));
+    const liveMap={};
+    allHtmls.forEach((h,i)=>{liveMap[h.path]=liveChecks[i];});
 
-      if (commits.length) {
-        const msg = commits[0].commit.message.split('\n')[0];
-        document.getElementById('stat-commit').textContent = msg.length > 26 ? msg.slice(0,26)+'…' : msg;
+    let totPages=0,totImgs=0,liveEx=0;
+    grid.innerHTML='';
+
+    // Store imgs per folder for lightbox
+    const imgStore={};
+
+    folders.forEach((folder,i)=>{
+      const num=parseInt(folder.name.split('-')[1]);
+      const commit=commitInfos[i];
+      const{htmls,imgs}=scanResults[i];
+      const msg=commit?commit.commit.message.split('\n')[0]:'—';
+      const hash=commit?commit.sha.slice(0,7):'';
+      const date=commit?timeAgo(commit.commit.author.date):'';
+      const liveHtmls=htmls.filter(h=>liveMap[h.path]);
+      const hasLive=liveHtmls.length>0;
+      const hasMulti=htmls.length>1;
+      const hasSingle=htmls.length===1;
+      const hasImgs=imgs.length>0;
+      const isLocked=!commit;
+
+      totPages+=htmls.length; totImgs+=imgs.length;
+      if(hasLive) liveEx++;
+
+      imgStore[i]=imgs;
+
+      let chipHTML,arrowIcon,cardClass;
+      if(isLocked){cardClass='locked';chipHTML=`<span class="chip chip-locked">🔒 sin contenido</span>`;arrowIcon='—';}
+      else if(hasLive&&!hasMulti){cardClass='available';chipHTML=`<span class="chip chip-live">Live</span>`;arrowIcon='↗';}
+      else if(hasMulti){cardClass='multi';const lc=liveHtmls.length;chipHTML=`<span class="chip chip-multi">${htmls.length} páginas${lc?` · ${lc} live`:''}</span>`;arrowIcon='↕';}
+      else if(hasSingle&&!hasLive){cardClass='github-only';chipHTML=`<span class="chip chip-repo">Solo repo</span>`;arrowIcon='↗';}
+      else{cardClass='github-only';chipHTML=`<span class="chip chip-repo">Solo repo</span>`;arrowIcon='↗';}
+
+      const card=document.createElement('div');
+      card.className=`card ${cardClass}`;
+      card.style.animationDelay=`${i*0.04}s`;
+
+      // HTML list
+      let htmlBlock='';
+      if(hasMulti){
+        const items=htmls.map(h=>{
+          const live=liveMap[h.path];
+          const href=live?pgUrl(h.path):h.ghUrl;
+          const sub=h.path.replace(folder.name+'/','');
+          const st=live?`<span class="html-item-status" style="color:var(--accent)">● live</span>`:`<span class="html-item-status" style="color:var(--text-dim)">repo</span>`;
+          return`<a class="html-item" href="${href}" target="_blank" onclick="event.stopPropagation()"><span class="html-item-icon">⬡</span><span class="html-item-name">${h.name}</span><span class="html-item-path">${sub}</span>${st}</a>`;
+        }).join('');
+        htmlBlock=`<div class="expand-section"><div class="collapsible"><div class="collapsible-inner"><div class="list-label">// páginas html</div>${items}</div></div><button class="expand-btn" onclick="toggleSec(this)" data-lo="Ocultar páginas" data-lc="Ver páginas"><span style="display:flex;align-items:center;gap:6px"><span style="opacity:0.5">⬡</span><span class="btn-label">Ver páginas</span></span><span class="arrow">▼</span></button></div>`;
       }
 
-      // Languages
-      try {
-        const langs = await apiGet('/languages');
-        const total = Object.values(langs).reduce((a,b)=>a+b,0);
-        if (langs.HTML) document.getElementById('badge-html').textContent = `● HTML ${((langs.HTML/total)*100).toFixed(1)}%`;
-        if (langs.CSS)  document.getElementById('badge-css').textContent  = `● CSS ${((langs.CSS/total)*100).toFixed(1)}%`;
-        document.getElementById('footer-lang').textContent = Object.keys(langs).join(' + ');
-      } catch(_) {}
+      // Image gallery
+      let imgBlock='';
+      if(hasImgs){
+        const key=`imgs_${i}`;
+        const thumbs=imgs.map((img,idx)=>`<div class="img-thumb" onclick="openLb(window.__IS['${key}'],${idx});event.stopPropagation()"><img src="${img.rawUrl}" alt="${img.name}" loading="lazy" onerror="this.parentElement.style.display='none'"/><div class="img-label">${img.name}</div></div>`).join('');
+        imgBlock=`<div class="expand-section"><div class="collapsible"><div class="collapsible-inner"><div class="list-label" style="color:var(--img-accent);opacity:0.75;margin-bottom:10px">// imágenes · ${imgs.length} archivo${imgs.length>1?'s':''}</div><div class="img-grid">${thumbs}</div></div></div><button class="expand-btn img-btn" onclick="toggleSec(this)" data-lo="Ocultar imágenes" data-lc="Ver imágenes (${imgs.length})"><span style="display:flex;align-items:center;gap:6px"><span>🖼</span><span class="btn-label">Ver imágenes (${imgs.length})</span></span><span class="arrow">▼</span></button></div>`;
+        // Store for lightbox
+        if(!window.__IS) window.__IS={};
+        window.__IS[key]=imgs;
+      }
 
-      // Timestamp
-      const lu = document.getElementById('last-updated');
-      lu.style.display = 'flex';
-      lu.textContent = `Escaneado en tiempo real · ${new Date().toLocaleTimeString('es-UY')}`;
-
-      // Commits por folder + escaneo recursivo de HTMLs en paralelo
-      const [commitInfos, htmlLists] = await Promise.all([
-        Promise.all(folders.map(f =>
-          apiGet(`/commits?path=${encodeURIComponent(f.name)}&per_page=1`)
-            .then(d => d[0] || null).catch(() => null)
-        )),
-        Promise.all(folders.map(f => findHtmlFiles(f.name)))
-      ]);
-
-      // Chequear live status de todos los htmls encontrados
-      const allHtmls = htmlLists.flat();
-      const liveChecks = await Promise.all(
-        allHtmls.map(h => checkLive(pagesUrl(h.path)))
-      );
-      const liveMap = {};
-      allHtmls.forEach((h,i) => { liveMap[h.path] = liveChecks[i]; });
-
-      let totalPages = 0, liveExercises = 0;
-      grid.innerHTML = '';
-
-      folders.forEach((folder, i) => {
-        const num    = parseInt(folder.name.split('-')[1]);
-        const commit = commitInfos[i];
-        const htmls  = htmlLists[i];
-        const msg    = commit ? commit.commit.message.split('\n')[0] : '—';
-        const hash   = commit ? commit.sha.slice(0,7) : '';
-        const date   = commit ? timeAgo(commit.commit.author.date) : '';
-
-        const isLocked  = !commit;
-        const liveHtmls = htmls.filter(h => liveMap[h.path]);
-        const hasLive   = liveHtmls.length > 0;
-        const hasMulti  = htmls.length > 1;
-        const hasSingle = htmls.length === 1;
-
-        totalPages += htmls.length;
-        if (hasLive) liveExercises++;
-
-        const card = document.createElement('div');
-        card.style.animationDelay = `${i * 0.04}s`;
-
-        let chipHTML, arrowIcon, cardClass;
-
-        if (isLocked) {
-          cardClass = 'locked';
-          chipHTML  = `<span class="chip chip-locked">🔒 sin contenido</span>`;
-          arrowIcon = '—';
-        } else if (hasLive && !hasMulti) {
-          // Un HTML live → click directo a Pages
-          cardClass = 'available';
-          chipHTML  = `<span class="chip chip-live">Live</span>`;
-          arrowIcon = '↗';
-        } else if (hasMulti) {
-          // Varios HTMLs → expandible
-          cardClass = 'multi';
-          const liveCount = liveHtmls.length;
-          chipHTML  = `<span class="chip chip-multi">${htmls.length} páginas${liveCount ? ` · ${liveCount} live` : ''}</span>`;
-          arrowIcon = '↕';
-        } else if (hasSingle && !hasLive) {
-          // Un HTML pero sin live → repo
-          cardClass = 'github-only';
-          chipHTML  = `<span class="chip chip-repo">Solo repo</span>`;
-          arrowIcon = '↗';
-        } else {
-          // Commits pero sin htmls encontrados → repo
-          cardClass = 'github-only';
-          chipHTML  = `<span class="chip chip-repo">Solo repo</span>`;
-          arrowIcon = '↗';
-        }
-
-        card.className = `card ${cardClass}`;
-
-        // Click handlers para tarjetas de un solo destino
-        if (cardClass === 'available') {
-          card.addEventListener('click', () => window.open(pagesUrl(liveHtmls[0].path), '_blank'));
-        } else if (cardClass === 'github-only') {
-          const dest = hasSingle ? htmls[0].ghUrl : folder.html_url;
-          card.addEventListener('click', () => window.open(dest, '_blank'));
-        }
-
-        // Build lista de htmls para tarjetas multi
-        let listHTML = '';
-        if (hasMulti) {
-          const items = htmls.map(h => {
-            const live    = liveMap[h.path];
-            const href    = live ? pagesUrl(h.path) : h.ghUrl;
-            const subPath = h.path.replace(folder.name + '/', '');
-            const statusTag = live
-              ? `<span class="html-item-status" style="color:var(--accent)">● live</span>`
-              : `<span class="html-item-status" style="color:var(--text-dim)">repo</span>`;
-            return `<a class="html-item" href="${href}" target="_blank" onclick="event.stopPropagation()">
-              <span class="html-item-icon">⬡</span>
-              <span class="html-item-name">${h.name}</span>
-              <span class="html-item-path">${subPath}</span>
-              ${statusTag}
-            </a>`;
-          }).join('');
-
-          listHTML = `
-            <div class="html-list">
-              <div class="html-list-inner">
-                <div class="html-list-label">// archivos html</div>
-                ${items}
-              </div>
-            </div>
-            <button class="expand-btn" onclick="toggleList(this)">
-              <span class="btn-label">Ver páginas</span>
-              <span class="arrow">▼</span>
-            </button>
-          `;
-        }
-
-        card.innerHTML = `
-          <div class="card-inner">
-            <div class="card-top">
-              <div class="card-number">${pad(num)}</div>
-              <div class="card-arrow">${arrowIcon}</div>
-            </div>
-            <div class="card-title">${folder.name}</div>
-            <div class="card-commit">
-              ${hash ? `<span class="commit-hash">${hash}</span>` : ''}
-              <span style="overflow:hidden;text-overflow:ellipsis">${msg.length>44?msg.slice(0,44)+'…':msg}</span>
-            </div>
-            <div class="card-footer">
-              <div class="card-path"><span class="dir">~/</span>${folder.name}/</div>
-              <div style="display:flex;align-items:center;gap:8px">
-                ${date ? `<div class="card-date">${date}</div>` : ''}
-                ${chipHTML}
-              </div>
-            </div>
+      card.innerHTML=`
+        <div class="card-inner">
+          <div class="card-top"><div class="card-number">${pad(num)}</div><div class="card-arrow">${arrowIcon}</div></div>
+          <div class="card-title">${folder.name}</div>
+          <div class="card-commit">${hash?`<span class="commit-hash">${hash}</span>`:''}<span style="overflow:hidden;text-overflow:ellipsis">${msg.length>44?msg.slice(0,44)+'…':msg}</span></div>
+          <div class="card-footer">
+            <div class="card-path"><span class="dir">~/</span>${folder.name}/</div>
+            <div style="display:flex;align-items:center;gap:8px">${date?`<div class="card-date">${date}</div>`:''}${chipHTML}</div>
           </div>
-          ${listHTML}
-        `;
+        </div>
+        ${htmlBlock}${imgBlock}`;
 
-        // Re-attach click listener (innerHTML borra los anteriores)
-        if (cardClass === 'available') {
-          const liveUrl = pagesUrl(liveHtmls[0].path);
-          card.querySelector('.card-inner').addEventListener('click', () => window.open(liveUrl, '_blank'));
-          card.querySelector('.card-inner').style.cursor = 'pointer';
-        } else if (cardClass === 'github-only') {
-          const dest = hasSingle ? htmls[0].ghUrl : folder.html_url;
-          card.querySelector('.card-inner').addEventListener('click', () => window.open(dest, '_blank'));
-          card.querySelector('.card-inner').style.cursor = 'pointer';
-        }
+      const inner=card.querySelector('.card-inner');
+      if(cardClass==='available'){inner.style.cursor='pointer';inner.addEventListener('click',()=>window.open(pgUrl(liveHtmls[0].path),'_blank'));}
+      else if(cardClass==='github-only'){const dest=hasSingle?htmls[0].ghUrl:folder.html_url;inner.style.cursor='pointer';inner.addEventListener('click',()=>window.open(dest,'_blank'));}
 
-        grid.appendChild(card);
-      });
+      grid.appendChild(card);
+    });
 
-      document.getElementById('stat-live').innerHTML  = `${liveExercises} <small>live</small>`;
-      document.getElementById('stat-pages').innerHTML = `${totalPages} <small>total</small>`;
+    document.getElementById('stat-live').innerHTML =`${liveEx} <small>live</small>`;
+    document.getElementById('stat-pages').innerHTML=`${totPages} <small>total</small>`;
+    document.getElementById('stat-imgs').innerHTML =`${totImgs} <small>total</small>`;
 
-    } catch(err) {
-      grid.innerHTML = `
-        <div class="error-state">
-          ⚠ No se pudo conectar con la GitHub API.<br/>
-          <span style="color:var(--text-dim);font-size:11px">${err.message}</span><br/>
-          <span style="color:var(--text-dim);font-size:11px">Límite: 60 req/hora por IP. Intentá en unos minutos.</span>
-        </div>`;
-    }
+  }catch(err){
+    grid.innerHTML=`<div class="error-state">⚠ No se pudo conectar con la GitHub API.<br/><span style="color:var(--text-dim);font-size:11px">${err.message}</span><br/><span style="color:var(--text-dim);font-size:11px">Límite: 60 req/hora por IP. Intentá en unos minutos.</span></div>`;
   }
-
-  init();
+}
+init();
 </script>
 </body>
 </html>
