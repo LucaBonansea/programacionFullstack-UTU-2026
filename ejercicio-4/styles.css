@@ -1,7 +1,13 @@
+html{
+    /* Para que el scroll sea suave al hacer click en los enlaces de navegación */
+    scroll-behavior: smooth;
+}
+
 *{
     margin: 0px;
     padding: 0px;
     box-sizing: border-box;
+    /* outline: 1px solid red; Para poder ver los elementos con mayor claridad a la ahora de programar..*/ 
 }
 body{
     background-color: #f0f0f0;
@@ -11,9 +17,9 @@ body{
 
 header{
     background-image: url('assets/img/fondo-acuarela-viaje_52683-84752.avif');
-    background-size: cover;
-    background-position: center;
-    height: 400px;
+    background-size: cover; /* Para que la imagen de fondo cubra todo el header */
+    background-position: center; /* Para centrar la imagen de fondo */
+    height: 700px;
 }
 
 h1{
@@ -24,15 +30,17 @@ header > h1{
 }
 section{
     padding-top: 150px;
+    margin-top: 5px;
+    line-height: 1.5;
 }
 
-.Atlantida{
+#Atlantida{
     background-image: url('assets/img/Atlantida2-scaled.jpg');
     background-size: cover;
     background-position: center;
-    height: 400px;
+    height: 600px;
 }
-main > section:first-child > div{
+main > section:first-child > div{ /* Estoy accediendo al div dentro del primer section dentro del main */
     background-color: rgba(255, 255, 255, 0.8);
     width: 400px;
     margin: auto;
@@ -40,7 +48,56 @@ main > section:first-child > div{
     border-radius: 10px;
 }
 
-.Juegazo{
+.navegation{
+    padding-top: 100px;
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Espacio entre los elementos de navegación */
+    list-style-type: none;
+    margin-top: 20px;
+}
+
+.navegation li div{
+    width: 200px;
+    height: 200px;
+    border-radius: 5%;
+    background-color: red;
+}
+
+.navegation li:first-child div{
+    background: #C1CF21;
+    background: linear-gradient(to top, #C1CF21 0%, #3A6ACF 100%); /* Degradado de verde a azul */
+}
+
+.navegation li:nth-child(2) div{
+    background: #CF1FB5;
+    background: linear-gradient(to top, #CF1FB5 0%, #3A6ACF 100%);
+}
+
+.navegation li:last-child div{
+    background: #CF640E;
+    background: linear-gradient(to top, #CF640E 0%, #C6CF17 100%);
+}
+
+.navegation li div:hover{
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+
+.navegation li div a{
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    line-height: 200px;
+}
+
+
+
+#Juegazo{
     background-image: url('assets/img/juegazo.webp');
     background-size: cover;
     background-position: center;
@@ -48,14 +105,14 @@ main > section:first-child > div{
     color: #f0f0f0;
 }
 
-.Artemis{
-    background-image: url('assets/img/artemis2.jpg');
+#Artemis{
+    background-image: url('assets/img/artemis2.jpeg');
     background-size: cover;
     background-position: center;
     height: 1200px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     
 }
