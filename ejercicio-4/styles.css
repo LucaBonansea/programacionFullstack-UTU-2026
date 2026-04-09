@@ -118,7 +118,7 @@ main > section:first-child > div:first-child{ /* Estoy accediendo al div dentro 
 }
 
 .title-best-game{
-    background-image: url('/ejercicio-4/assets/img/title.webp');
+    background-image: url('assets/img/title.webp');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
