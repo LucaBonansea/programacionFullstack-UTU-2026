@@ -38,9 +38,9 @@ section{
     background-image: url('assets/img/Atlantida2-scaled.jpg');
     background-size: cover;
     background-position: center;
-    height: 600px;
+    height: 1000px;
 }
-main > section:first-child > div{ /* Estoy accediendo al div dentro del primer section dentro del main */
+main > section:first-child > div:first-child{ /* Estoy accediendo al div dentro del primer section dentro del main */
     background-color: rgba(255, 255, 255, 0.8);
     width: 400px;
     margin: auto;
@@ -118,7 +118,7 @@ main > section:first-child > div{ /* Estoy accediendo al div dentro del primer s
 }
 
 .title-best-game{
-    background-image: url('assets/img/title.webp');
+    background-image: url('/ejercicio-4/assets/img/title.webp');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
