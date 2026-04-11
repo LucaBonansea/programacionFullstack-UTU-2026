@@ -36,6 +36,7 @@
     .badge-green  { border-color:var(--accent);  color:var(--accent);  background:rgba(0,229,160,0.06); }
     .badge-blue   { border-color:var(--accent2); color:var(--accent2); background:rgba(0,153,255,0.06); }
     .badge-orange { border-color:var(--accent3); color:var(--accent3); background:rgba(255,107,53,0.06); }
+    .badge-amber  { border-color:var(--img-accent); color:var(--img-accent); background:rgba(245,158,11,0.06); }
     .github-link { display:inline-flex; align-items:center; gap:8px; padding:9px 18px; border-radius:6px; border:1px solid var(--border); background:var(--surface); color:var(--text); text-decoration:none; font-size:12px; font-weight:600; transition:all .2s; }
     .github-link:hover { border-color:var(--accent); color:var(--accent); background:rgba(0,229,160,0.04); }
     .github-link svg { width:15px; height:15px; fill:currentColor; }
@@ -125,11 +126,92 @@
     .footer-text { font-size:11px; color:var(--text-dim); }
     .footer-text a { color:var(--accent); text-decoration:none; }
     .footer-text a:hover { text-decoration:underline; }
+
+    /* ── SECCIÓN IMÁGENES ── */
+    #img-section { margin-bottom:60px; }
+
+    /* filtro de ejercicio */
+    .img-filters { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
+    .img-filter-btn {
+      padding:4px 14px; border-radius:20px; font-size:10px; font-weight:600;
+      letter-spacing:0.06em; cursor:pointer; border:1px solid var(--border);
+      background:var(--surface); color:var(--text-dim); font-family:'JetBrains Mono',monospace;
+      transition:all .15s;
+    }
+    .img-filter-btn:hover { border-color:var(--img-accent); color:var(--img-accent); }
+    .img-filter-btn.active { background:rgba(245,158,11,0.12); border-color:var(--img-accent); color:var(--img-accent); }
+
+    /* galería global */
+    .global-img-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+      gap:10px;
+      margin-bottom:32px;
+    }
+    .global-img-thumb {
+      aspect-ratio:4/3; border-radius:6px; overflow:hidden;
+      border:1px solid var(--border); cursor:pointer;
+      transition:border-color .2s,transform .2s,box-shadow .2s;
+      background:var(--surface2); position:relative;
+    }
+    .global-img-thumb:hover { border-color:var(--img-accent); transform:scale(1.03); box-shadow:0 6px 24px rgba(0,0,0,0.5); }
+    .global-img-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+    .global-img-thumb .git-overlay {
+      position:absolute; inset:0; background:linear-gradient(transparent 45%,rgba(0,0,0,0.85));
+      display:flex; flex-direction:column; justify-content:flex-end; padding:8px;
+      opacity:0; transition:opacity .2s;
+    }
+    .global-img-thumb:hover .git-overlay { opacity:1; }
+    .git-overlay-name { font-size:10px; color:#fff; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .git-overlay-ex   { font-size:9px; color:var(--img-accent); margin-top:2px; }
+
+    /* tabla de referencias */
+    .ref-table-wrap { border:1px solid var(--border); border-radius:8px; overflow:hidden; background:var(--surface); }
+    .ref-table { width:100%; border-collapse:collapse; font-size:11px; }
+    .ref-table thead tr { background:var(--surface2); border-bottom:1px solid var(--border); }
+    .ref-table th { padding:10px 16px; text-align:left; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim); font-weight:600; white-space:nowrap; }
+    .ref-table tbody tr { border-bottom:1px solid var(--border); transition:background .12s; }
+    .ref-table tbody tr:last-child { border-bottom:none; }
+    .ref-table tbody tr:hover { background:rgba(255,255,255,0.025); }
+    .ref-table td { padding:9px 16px; vertical-align:middle; color:var(--text); }
+    .ref-table td.td-idx { color:var(--text-dim); font-size:10px; width:36px; }
+    .ref-table td.td-preview { width:52px; padding:6px 12px; }
+    .ref-table td.td-preview img { width:40px; height:30px; object-fit:cover; border-radius:3px; border:1px solid var(--border); cursor:pointer; transition:border-color .15s; display:block; }
+    .ref-table td.td-preview img:hover { border-color:var(--img-accent); }
+    .ref-table td.td-name { font-weight:600; color:var(--text-bright); max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .ref-table td.td-ex { color:var(--accent2); font-size:10px; white-space:nowrap; }
+    .ref-table td.td-path { color:var(--text-dim); font-size:10px; max-width:260px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .ref-table td.td-ext { }
+    .ref-table td.td-links { white-space:nowrap; }
+    .ref-link { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:4px; font-size:9px; font-weight:600; text-decoration:none; border:1px solid; transition:all .15s; }
+    .ref-link-raw  { border-color:rgba(245,158,11,0.3); color:var(--img-accent); background:rgba(245,158,11,0.06); }
+    .ref-link-raw:hover  { background:rgba(245,158,11,0.14); border-color:var(--img-accent); }
+    .ref-link-gh   { border-color:var(--border); color:var(--text-dim); background:var(--surface2); margin-left:4px; }
+    .ref-link-gh:hover   { border-color:var(--accent2); color:var(--accent2); }
+    .ext-badge { display:inline-block; padding:1px 6px; border-radius:3px; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; }
+    .ext-png  { background:rgba(0,229,160,0.10); color:var(--accent); border:1px solid rgba(0,229,160,0.2); }
+    .ext-jpg,.ext-jpeg { background:rgba(0,153,255,0.10); color:var(--accent2); border:1px solid rgba(0,153,255,0.2); }
+    .ext-gif  { background:rgba(167,139,250,0.12); color:#a78bfa; border:1px solid rgba(167,139,250,0.25); }
+    .ext-svg  { background:rgba(255,107,53,0.10); color:var(--accent3); border:1px solid rgba(255,107,53,0.2); }
+    .ext-webp { background:rgba(245,158,11,0.10); color:var(--img-accent); border:1px solid rgba(245,158,11,0.2); }
+    .ext-other{ background:rgba(255,255,255,0.05); color:var(--text-dim); border:1px solid var(--border); }
+
+    /* search box */
+    .img-search-wrap { position:relative; margin-bottom:16px; }
+    .img-search { width:100%; padding:9px 14px 9px 36px; background:var(--surface); border:1px solid var(--border); border-radius:6px; color:var(--text); font-family:'JetBrains Mono',monospace; font-size:12px; outline:none; transition:border-color .2s; }
+    .img-search:focus { border-color:var(--img-accent); }
+    .img-search::placeholder { color:var(--text-dim); }
+    .img-search-icon { position:absolute; left:11px; top:50%; transform:translateY(-50%); color:var(--text-dim); font-size:13px; pointer-events:none; }
+
+    /* empty state */
+    .img-empty { padding:40px; text-align:center; color:var(--text-dim); font-size:12px; }
+
     @media(max-width:640px){
       .stats-bar{flex-direction:column;}
       .stat-item{border-right:none;border-bottom:1px solid var(--border);}
       .stat-item:last-child{border-bottom:none;}
       .header-meta{align-items:flex-start;}
+      .global-img-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));}
     }
   </style>
 </head>
@@ -174,6 +256,58 @@
   <div class="exercises-grid" id="grid">
     <div class="loading-state"><div class="spinner"></div><span>Escaneando repositorio...</span></div>
   </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECCIÓN DE IMÁGENES
+  ══════════════════════════════════════════════ -->
+  <div id="img-section" style="display:none">
+
+    <div class="section-header" style="margin-top:8px">
+      <span class="section-title">// imágenes</span>
+      <div class="section-line"></div>
+      <span class="badge badge-amber" id="badge-imgs-count">cargando...</span>
+    </div>
+
+    <!-- Búsqueda -->
+    <div class="img-search-wrap">
+      <span class="img-search-icon">⌕</span>
+      <input class="img-search" id="img-search" type="text" placeholder="Buscar por nombre, ejercicio o extensión…" oninput="filterImgs()"/>
+    </div>
+
+    <!-- Filtros por ejercicio -->
+    <div class="img-filters" id="img-filters">
+      <button class="img-filter-btn active" data-ex="all" onclick="setExFilter(this)">Todos</button>
+    </div>
+
+    <!-- Galería -->
+    <div class="global-img-grid" id="global-img-grid"></div>
+
+    <!-- Tabla de referencias -->
+    <div class="section-header" style="margin-top:8px;margin-bottom:14px">
+      <span class="section-title">// referencias</span>
+      <div class="section-line"></div>
+      <span style="font-size:10px;color:var(--text-dim)" id="ref-count-label"></span>
+    </div>
+    <div class="ref-table-wrap">
+      <table class="ref-table" id="ref-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Vista</th>
+            <th>Nombre</th>
+            <th>Ejercicio</th>
+            <th>Ruta</th>
+            <th>Tipo</th>
+            <th>Links</th>
+          </tr>
+        </thead>
+        <tbody id="ref-tbody"></tbody>
+      </table>
+      <div class="img-empty" id="ref-empty" style="display:none">No se encontraron imágenes con ese filtro.</div>
+    </div>
+
+  </div>
+  <!-- fin sección imágenes -->
 
   <footer>
     <div class="footer-inner">
@@ -242,7 +376,7 @@ function lbKey(e){if(e.key==='ArrowRight')lbMove(1);if(e.key==='ArrowLeft')lbMov
 function renderLb(){const i=LB_IMGS[LB_IDX];document.getElementById('lb-img').src=i.rawUrl;document.getElementById('lb-name').textContent=i.name;document.getElementById('lb-counter').textContent=`${LB_IDX+1} / ${LB_IMGS.length}`;}
 window.openLb=openLb; window.closeLb=closeLb; window.lbMove=lbMove;
 
-// Toggle expand
+// Toggle expand (cards)
 function toggleSec(btn){
   const panel=btn.previousElementSibling;
   const open=panel.classList.toggle('open');
@@ -253,6 +387,108 @@ function toggleSec(btn){
 }
 window.toggleSec=toggleSec;
 
+// ── SECCIÓN IMÁGENES ────────────────────────────────────
+let ALL_IMGS_DATA = [];   // [{name,path,rawUrl,ghUrl,ejercicio,ext}, ...]
+let ACTIVE_EX_FILTER = 'all';
+
+function extBadge(name){
+  const e=name.split('.').pop().toLowerCase();
+  const cls={'png':'ext-png','jpg':'ext-jpg','jpeg':'ext-jpeg','gif':'ext-gif','svg':'ext-svg','webp':'ext-webp'}[e]||'ext-other';
+  return`<span class="ext-badge ${cls}">${e}</span>`;
+}
+
+function buildImgSection(allImgs){
+  ALL_IMGS_DATA=allImgs;
+
+  // filtros únicos por ejercicio
+  const exs=[...new Set(allImgs.map(i=>i.ejercicio))].sort((a,b)=>parseInt(a.split('-')[1])-parseInt(b.split('-')[1]));
+  const filterBar=document.getElementById('img-filters');
+  exs.forEach(ex=>{
+    const btn=document.createElement('button');
+    btn.className='img-filter-btn';
+    btn.dataset.ex=ex;
+    btn.textContent=ex;
+    btn.onclick=()=>setExFilter(btn);
+    filterBar.appendChild(btn);
+  });
+
+  renderImgs(allImgs);
+  document.getElementById('img-section').style.display='block';
+  document.getElementById('badge-imgs-count').textContent=`${allImgs.length} imágenes`;
+}
+
+function getFiltered(){
+  const q=document.getElementById('img-search').value.trim().toLowerCase();
+  return ALL_IMGS_DATA.filter(img=>{
+    const exOk=ACTIVE_EX_FILTER==='all'||img.ejercicio===ACTIVE_EX_FILTER;
+    const qOk=!q||(img.name.toLowerCase().includes(q)||img.ejercicio.toLowerCase().includes(q)||img.ext.toLowerCase().includes(q));
+    return exOk&&qOk;
+  });
+}
+
+function setExFilter(btn){
+  document.querySelectorAll('.img-filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  ACTIVE_EX_FILTER=btn.dataset.ex;
+  renderImgs(getFiltered());
+}
+window.setExFilter=setExFilter;
+
+function filterImgs(){
+  renderImgs(getFiltered());
+}
+window.filterImgs=filterImgs;
+
+function renderImgs(imgs){
+  const grid=document.getElementById('global-img-grid');
+  const tbody=document.getElementById('ref-tbody');
+  const empty=document.getElementById('ref-empty');
+  const countLbl=document.getElementById('ref-count-label');
+
+  grid.innerHTML='';
+  tbody.innerHTML='';
+  countLbl.textContent=`${imgs.length} archivo${imgs.length!==1?'s':''}`;
+
+  if(!imgs.length){
+    empty.style.display='block';
+    return;
+  }
+  empty.style.display='none';
+
+  // galería
+  imgs.forEach((img,idx)=>{
+    const div=document.createElement('div');
+    div.className='global-img-thumb';
+    div.innerHTML=`
+      <img src="${img.rawUrl}" alt="${img.name}" loading="lazy" onerror="this.parentElement.style.display='none'"/>
+      <div class="git-overlay">
+        <div class="git-overlay-name">${img.name}</div>
+        <div class="git-overlay-ex">${img.ejercicio}</div>
+      </div>`;
+    div.onclick=()=>openLb(imgs,idx);
+    grid.appendChild(div);
+  });
+
+  // tabla
+  imgs.forEach((img,idx)=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td class="td-idx">${idx+1}</td>
+      <td class="td-preview"><img src="${img.rawUrl}" alt="${img.name}" loading="lazy" onerror="this.style.display='none'" onclick="openLb(window.__GIMGS,${ALL_IMGS_DATA.indexOf(img)});event.stopPropagation()"/></td>
+      <td class="td-name" title="${img.name}">${img.name}</td>
+      <td class="td-ex">${img.ejercicio}</td>
+      <td class="td-path" title="${img.path}"><span style="color:var(--accent2)">~/</span>${img.path}</td>
+      <td class="td-ext">${extBadge(img.name)}</td>
+      <td class="td-links">
+        <a class="ref-link ref-link-raw" href="${img.rawUrl}" target="_blank">Raw</a>
+        <a class="ref-link ref-link-gh"  href="${img.ghUrl}"  target="_blank">GitHub</a>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+// ────────────────────────────────────────────────────────
+
 async function init(){
   const grid=document.getElementById('grid');
   try{
@@ -261,7 +497,6 @@ async function init(){
 
     document.getElementById('stat-count').innerHTML=`${folders.length} <small>/ total</small>`;
     document.getElementById('badge-count').textContent=`${folders.length} ejercicios`;
-    if(commits.length){const m=commits[0].commit.message.split('\n')[0]; /* stat-commit removed */}
 
     try{
       const langs=await api('/languages');
@@ -288,8 +523,10 @@ async function init(){
     let totPages=0,totImgs=0,liveEx=0;
     grid.innerHTML='';
 
-    // Store imgs per folder for lightbox
     const imgStore={};
+
+    // Acumular todas las imágenes con metadato de ejercicio
+    const globalImgList=[];
 
     folders.forEach((folder,i)=>{
       const num=parseInt(folder.name.split('-')[1]);
@@ -310,6 +547,12 @@ async function init(){
 
       imgStore[i]=imgs;
 
+      // añadir a lista global
+      imgs.forEach(img=>{
+        const ext=img.name.split('.').pop().toLowerCase();
+        globalImgList.push({...img, ejercicio:folder.name, ext});
+      });
+
       let chipHTML,arrowIcon,cardClass;
       if(isLocked){cardClass='locked';chipHTML=`<span class="chip chip-locked">🔒 sin contenido</span>`;arrowIcon='—';}
       else if(hasLive&&!hasMulti){cardClass='available';chipHTML=`<span class="chip chip-live">Live</span>`;arrowIcon='↗';}
@@ -321,7 +564,6 @@ async function init(){
       card.className=`card ${cardClass}`;
       card.style.animationDelay=`${i*0.04}s`;
 
-      // HTML list
       let htmlBlock='';
       if(hasMulti){
         const items=htmls.map(h=>{
@@ -334,13 +576,11 @@ async function init(){
         htmlBlock=`<div class="expand-section"><div class="collapsible"><div class="collapsible-inner"><div class="list-label">// páginas html</div>${items}</div></div><button class="expand-btn" onclick="toggleSec(this)" data-lo="Ocultar páginas" data-lc="Ver páginas"><span style="display:flex;align-items:center;gap:6px"><span style="opacity:0.5">⬡</span><span class="btn-label">Ver páginas</span></span><span class="arrow">▼</span></button></div>`;
       }
 
-      // Image gallery
       let imgBlock='';
       if(hasImgs){
         const key=`imgs_${i}`;
         const thumbs=imgs.map((img,idx)=>`<div class="img-thumb" onclick="openLb(window.__IS['${key}'],${idx});event.stopPropagation()"><img src="${img.rawUrl}" alt="${img.name}" loading="lazy" onerror="this.parentElement.style.display='none'"/><div class="img-label">${img.name}</div></div>`).join('');
         imgBlock=`<div class="expand-section"><div class="collapsible"><div class="collapsible-inner"><div class="list-label" style="color:var(--img-accent);opacity:0.75;margin-bottom:10px">// imágenes · ${imgs.length} archivo${imgs.length>1?'s':''}</div><div class="img-grid">${thumbs}</div></div></div><button class="expand-btn img-btn" onclick="toggleSec(this)" data-lo="Ocultar imágenes" data-lc="Ver imágenes (${imgs.length})"><span style="display:flex;align-items:center;gap:6px"><span>🖼</span><span class="btn-label">Ver imágenes (${imgs.length})</span></span><span class="arrow">▼</span></button></div>`;
-        // Store for lightbox
         if(!window.__IS) window.__IS={};
         window.__IS[key]=imgs;
       }
@@ -367,6 +607,12 @@ async function init(){
     document.getElementById('stat-live').innerHTML =`${liveEx} <small>live</small>`;
     document.getElementById('stat-pages').innerHTML=`${totPages} <small>total</small>`;
     document.getElementById('stat-imgs').innerHTML =`${totImgs} <small>total</small>`;
+
+    // Construir sección global de imágenes
+    if(globalImgList.length>0){
+      window.__GIMGS=globalImgList;
+      buildImgSection(globalImgList);
+    }
 
   }catch(err){
     grid.innerHTML=`<div class="error-state">⚠ No se pudo conectar con la GitHub API.<br/><span style="color:var(--text-dim);font-size:11px">${err.message}</span><br/><span style="color:var(--text-dim);font-size:11px">Límite: 60 req/hora por IP. Intentá en unos minutos.</span></div>`;
