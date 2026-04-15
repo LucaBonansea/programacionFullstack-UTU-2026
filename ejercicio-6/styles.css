@@ -36,8 +36,8 @@ section:first-child > button > div:last-child > .fa-solid{
 section:first-child > button{
     display: flex;
     padding: 8px 0px;
-    padding-left: 7px;
-    padding-right: 5px;
+    padding-left: 15px;
+    padding-right: 10px;
     border-radius: 0.2rem;
     border: 0px;
     opacity: 0.8;
