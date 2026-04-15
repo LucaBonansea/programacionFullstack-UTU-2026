@@ -58,6 +58,7 @@ section:nth-child(2){
     background-color: #F5F6FA;
     padding: 20px 0px;
     z-index: 1;
+    color: white;
 }
 
 section > a{
@@ -115,6 +116,10 @@ section > a{
 
 .notificationicon{
     width: 20px;
+    height: 20px;
+    background-image: url('assets/img/notification.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 .categories{
