@@ -1,0 +1,139 @@
+/*Ajustes generales de cualquier elemento */
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    /* outline: 1px solid red; */
+}
+
+
+
+/*Para todos los secitons*/
+section{
+    margin-top: 80px;
+}
+
+/*Nivel 1*/
+
+section:first-child{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    z-index: 1;
+}
+
+
+section:first-child > button > div:first-child{
+    margin-right: 4px;
+}
+
+section:first-child > button > div:last-child > .fa-solid{
+    font-size: 0.6rem;
+    display: flex;
+    justify-content: flex-start;
+}
+
+section:first-child > button{
+    display: flex;
+    padding: 8px 0px;
+    padding-left: 7px;
+    padding-right: 5px;
+    border-radius: 0.2rem;
+    border: 0px;
+    opacity: 0.8;
+}
+
+section:first-child > button:hover{
+    opacity: 1;
+    cursor: pointer;
+}
+
+/*Media hora para hacer eso jsjsjsj*/
+
+/*Nivel 2*/
+section:nth-child(2){
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    background-color: #F5F6FA;
+    padding: 20px 0px;
+    z-index: 1;
+}
+
+section > a{
+    text-decoration: none;
+    color: white;
+}
+
+.product{
+    background-color: #74B9FF;
+    padding: 30px 15px;
+    border-radius: 0.4rem;
+    height: 30%;
+}
+
+.sale{
+    display: flex;
+    background-color: #FF7675;
+    align-items: center;
+    padding-left: 20px;
+    border-radius: 0.4rem;
+    margin-top: 20px;
+    height: 100px;
+   
+}
+
+.sale > div:first-child{
+    padding: 0px 4px;
+    padding-top: 30%;
+    padding-bottom: 30%;
+    background-color: red;
+    margin-bottom: 15px;
+    border-radius: 0.4rem;
+    font-size: 12px;
+}
+.sale > div:last-child{
+    margin: 30px;
+}
+/*Nivel 3*/
+.navegation{
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 20px;
+    background-color: #2D3436;
+    color: white;
+    width: 100%;
+    position: fixed;
+}
+
+.sidebar{
+    min-height: 800px;
+    width: 100%;
+    position: relative;
+}
+
+.notificationicon{
+    width: 20px;
+}
+
+.categories{
+    position: sticky;
+    top: 500px;
+    background-color: #74B9FF;
+    padding: 10px 0px;
+    margin: 10px 0px;
+    width: 100%;
+}
+
+.separation{
+   border: 2px solid red;
+   border-style: dashed;
+}
+
+.contenido{
+    margin: 20px;
+    min-height: 300px;
+    top: 0;
+}
+
+/*Le agrego los ultimos detalles en calse y de paso le pregunto al prof jej*/
