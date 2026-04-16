@@ -104,14 +104,10 @@ section > a{
     color: white;
     width: 100%;
     position: fixed;
-    z-index: 1;
+    z-index: 9;
+    top: 400px;
 }
 
-.sidebar{
-    min-height: 800px;
-    width: 100%;
-    position: relative;
-}
 
 .notificationicon{
     width: 20px;
@@ -122,23 +118,29 @@ section > a{
 }
 
 .categories{
-    position: sticky;
+    position: fixed;
     top: 500px;
     background-color: #74B9FF;
     padding: 10px 0px;
     margin: 10px 0px;
     width: 100%;
+    z-index: 1;
+
 }
 
 .separation{
    border: 2px solid red;
    border-style: dashed;
+   margin-top: 400px;
 }
 
 .contenido{
-    margin: 20px;
+    padding: 20px;
     min-height: 800px;
+    position: relative;
+    z-index: 3;
     top: 0;
+    background-color: #ffff; 
 }
 
 /*Le agrego los ultimos detalles en calse y de paso le pregunto al prof jej*/
