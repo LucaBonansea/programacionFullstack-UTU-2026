@@ -132,6 +132,8 @@ section > a{
    border: 2px solid red;
    border-style: dashed;
    margin-top: 400px;
+   z-index: 3;
+   position: relative;
 }
 
 .contenido{
@@ -141,6 +143,20 @@ section > a{
     z-index: 3;
     top: 0;
     background-color: #ffff; 
+}
+/* Cosas extra*/
+
+.extra{
+    display: flex;
+    justify-content: center;
+}
+
+
+.boton{
+    text-decoration: none;
+    padding: 20px 10px;
+    border-radius: 2rem;
+    background-color: #74B9FF;
 }
 
 /*Le agrego los ultimos detalles en calse y de paso le pregunto al prof jej*/
