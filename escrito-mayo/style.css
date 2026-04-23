@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Commissioner:wght@100..900&display=swap');
+
+/*Configuraciones generales*/
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/*Estilos generales de la pagina web*/
+body{
+    font-family: Commissioner, Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    background-color: white;
+    height: auto;
+}
+
+/*Imagen header*/
+header{
+    background-image: url(/programacionFullstack-UTU-2026/escrito-mayo/assets/images/image-hero-desktop.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 25rem;
+}
+
+/*Navegacion*/
+
+.navegation{
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem 12rem;
+}
+
+
+.menu{
+    display: flex;
+    gap: 2rem;   
+}
+
+li{
+    list-style: none;
+}
+
+.menu > li > a{
+    text-decoration: none;
+    color: white;
+}
+
+
+/*Logo nav*/
+.logotitile{
+    background-image: url(/programacionFullstack-UTU-2026/escrito-mayo/assets/images/logo.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 8rem;
+}
+
+/*Logo main*/
+.containerlogo{
+    display: flex;
+    justify-content: center;
+}
+
+.logo {background-image: url(/programacionFullstack-UTU-2026/escrito-mayo/assets/images/logo-mastercraft.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: -1rem;
+    position: relative;
+    z-index: 1;
+
+}
+
+/*Info del Monitor*/
+main{
+    display: flex;
+    justify-content: center;
+}
+
+.info{
+    position: relative;
+    top: -100px;
+}
+
+.info > section{
+    background-color: #ffff;
+    margin-bottom: 20px;
+    border: 0.2px solid hsl(0, 0%, 48%);
+    border-radius: 0.5rem;
+    width: 550px;
+}
+
+.Master {
+    text-align: center;
+    padding: 2rem;
+}
+
+.Master > .botones{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.back {
+    background-color: hsl(176, 50%, 47%);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    margin-right: 1rem;
+    font-weight: bold;
+    
+}
+
+.imgbookmark {
+    background-image: url(/programacionFullstack-UTU-2026/escrito-mayo/assets/images/icon-bookmark.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    width: 4rem;
+    height: 4rem;
+    margin-left: auto;
+    background-color:  #F4F4F4;
+    border-radius: 2rem 0rem 0rem 2rem;
+}
+
+.bookmarked{
+    display: flex;
+}
+
+.textbookmark{
+    background-color:  #F4F4F4;
+    padding: 2px 30px;
+    border-radius: 0rem 2rem 2rem 0rem;
+    height: 65px;
+    align-items: center;
+    display: flex;
+}
+
+.stats{
+    height: 200px;
+    padding-top: 20px;
+}
+.columns{
+    display: flex;
+}
+
+.columns > div{
+    padding: 0px 40px;
+    border-right: 0.5px solid hsl(0, 0%, 48%);
+}
