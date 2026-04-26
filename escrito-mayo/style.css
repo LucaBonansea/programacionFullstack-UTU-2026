@@ -11,8 +11,12 @@
 body{
     font-family: Commissioner, Arial, Helvetica, sans-serif;
     font-size: 16px;
-    background-color: white;
+    background-color: #FAFAFA;
     height: auto;
+}
+
+p{
+    color: #7B7B7B;
 }
 
 /*Imagen header*/
@@ -67,9 +71,9 @@ li{
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
-    width: 2rem;
-    height: 2rem;
-    margin-bottom: -1rem;
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: -1.5rem;
     position: relative;
     z-index: 1;
 
@@ -89,9 +93,9 @@ main{
 .info > section{
     background-color: #ffff;
     margin-bottom: 20px;
-    border: 0.2px solid hsl(0, 0%, 48%);
+    border: 0.2px solid #E2E2E2;
     border-radius: 0.5rem;
-    width: 550px;
+    width: 650px;
 }
 
 .Master {
@@ -103,7 +107,17 @@ main{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 20px;
+    margin: 0px 10px;
+    margin-top: 35px;
+    margin-bottom: 5px;
+}
+
+.Master > h1{
+    margin: 20px auto;
+}
+
+.Master > p{
+margin: 20px auto;
 }
 
 .back {
@@ -115,6 +129,7 @@ main{
     cursor: pointer;
     margin-right: 1rem;
     font-weight: bold;
+    font-size: 0.8rem;
     
 }
 
@@ -123,11 +138,12 @@ main{
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
-    width: 4rem;
-    height: 4rem;
+    width: 3rem;
+    height: 3rem;
     margin-left: auto;
     background-color:  #F4F4F4;
     border-radius: 2rem 0rem 0rem 2rem;
+    
 }
 
 .bookmarked{
@@ -136,22 +152,129 @@ main{
 
 .textbookmark{
     background-color:  #F4F4F4;
-    padding: 2px 30px;
+    padding: 8px 15px;
     border-radius: 0rem 2rem 2rem 0rem;
-    height: 65px;
     align-items: center;
     display: flex;
+    color: #7B7B7B;
+    font-size: 0.8rem;
 }
 
 .stats{
-    height: 200px;
+    height: 180px;
     padding-top: 20px;
 }
 .columns{
     display: flex;
+    margin-bottom: 30px;
 }
 
 .columns > div{
     padding: 0px 40px;
+    margin-top: 20px;
+    padding-left: 30px;
     border-right: 0.5px solid hsl(0, 0%, 48%);
+}
+
+.columns > div > h2{
+    margin-bottom: 5px;
+    
+}
+
+.barra{
+    height: 10px;
+    background-color: #e0e0e0;
+    margin: 20px 30px;
+    border-radius: 2rem;
+}
+
+
+.progreso{
+    height: 10px;
+    width: 80%;
+    background-color: hsl(176, 50%, 47%);
+    border-radius: 2rem;
+}
+
+.about{
+    padding: 40px;
+    
+
+    
+}
+
+.about > h2{
+    margin-bottom: 30px;
+    margin-top: 10px;
+    font-size: 1.2rem;
+}
+
+.plans {
+    margin-top: 30px;
+}
+
+
+.plans > div{
+    border : 0.2px solid #E2E2E2;
+    border-radius: 0.4rem;
+    padding: 20px;
+    margin-top: 20px;
+    
+}
+
+
+.plans > div > div > h2{
+    margin-bottom: 45px;
+    font-size: 1.2rem;
+}
+
+.plans > div > div:first-child{
+    display: flex;
+    justify-content: space-between;
+}
+
+.plans > div > div:last-child{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    
+}
+
+
+.plans > div > p{
+    margin-bottom: 20px;
+}
+
+.plans > div > div:first-child > p{
+    color: hsl(176, 50%, 47%);
+    
+    
+}
+
+.plans > div > div:last-child > a{
+    border: 0.2px solid hsl(176, 50%, 47%);
+    border-radius: 2rem;
+    padding: 11px 23px;
+    background-color: hsl(176, 50%, 47%); ;
+    color: white;
+    font-weight: bold;
+    font-size: 0.8rem;
+    cursor: pointer;
+    
+}
+
+.plans > div > div >  p > span {
+    font-size: 2rem;
+    font-weight: bold;
+    color: black;
+}
+
+.mahogany{
+    opacity: 0.5;
+}
+
+.plans > div:last-child > div:last-child > a{
+    background-color: #7B7B7B;
+    border: 0.2px solid #7B7B7B;
 }
