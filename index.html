@@ -13,6 +13,7 @@
       --accent:#00e5a0; --accent2:#0099ff; --accent3:#ff6b35;
       --text:#c8d0dc; --text-dim:#4a5568; --text-bright:#f0f4f8;
       --locked:#0e1013; --img-accent:#f59e0b;
+      --accent4:#c084fc; /* purple for "otros" */
     }
     html { scroll-behavior:smooth; }
     body { background:var(--bg); color:var(--text); font-family:'JetBrains Mono',monospace; min-height:100vh; overflow-x:hidden; }
@@ -37,6 +38,7 @@
     .badge-blue   { border-color:var(--accent2); color:var(--accent2); background:rgba(0,153,255,0.06); }
     .badge-orange { border-color:var(--accent3); color:var(--accent3); background:rgba(255,107,53,0.06); }
     .badge-amber  { border-color:var(--img-accent); color:var(--img-accent); background:rgba(245,158,11,0.06); }
+    .badge-purple { border-color:var(--accent4); color:var(--accent4); background:rgba(192,132,252,0.06); }
     .github-link { display:inline-flex; align-items:center; gap:8px; padding:9px 18px; border-radius:6px; border:1px solid var(--border); background:var(--surface); color:var(--text); text-decoration:none; font-size:12px; font-weight:600; transition:all .2s; }
     .github-link:hover { border-color:var(--accent); color:var(--accent); background:rgba(0,229,160,0.04); }
     .github-link svg { width:15px; height:15px; fill:currentColor; }
@@ -56,6 +58,10 @@
     @keyframes spin { to{transform:rotate(360deg)} }
     .error-state { grid-column:1/-1; padding:24px; border:1px solid rgba(255,107,53,0.3); border-radius:8px; background:rgba(255,107,53,0.05); color:var(--accent3); font-size:12px; line-height:1.8; }
     .exercises-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:12px; margin-bottom:60px; min-height:200px; align-items:start; }
+
+    /* ── OTROS grid (wider cards) ── */
+    .otros-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:12px; margin-bottom:60px; align-items:start; }
+
     .card { background:var(--surface); border:1px solid var(--border); border-radius:8px; display:flex; flex-direction:column; position:relative; overflow:hidden; animation:fadeUp .35s ease both; transition:border-color .2s,box-shadow .2s; }
     @keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
     .card-inner { padding:20px 22px; display:flex; flex-direction:column; gap:12px; }
@@ -63,13 +69,18 @@
     .card.available::before   { background:linear-gradient(90deg,var(--accent),var(--accent2)); }
     .card.multi::before       { background:linear-gradient(90deg,var(--accent),#a78bfa); }
     .card.github-only::before { background:linear-gradient(90deg,var(--accent2),#7c5cbf); }
+    .card.otro::before        { background:linear-gradient(90deg,var(--accent4),var(--accent2)); }
     .card.available:hover,.card.multi:hover,.card.github-only:hover { border-color:rgba(0,229,160,0.3); box-shadow:0 8px 32px rgba(0,0,0,0.5); }
-    .card.available:hover::before,.card.multi:hover::before,.card.github-only:hover::before { opacity:1; }
+    .card.otro:hover { border-color:rgba(192,132,252,0.35); box-shadow:0 8px 32px rgba(0,0,0,0.5); }
+    .card.available:hover::before,.card.multi:hover::before,.card.github-only:hover::before,.card.otro:hover::before { opacity:1; }
     .card.locked { background:var(--locked); border-color:#13161b; opacity:0.5; cursor:not-allowed; }
     .card:not(.locked):hover .card-number { color:var(--accent); }
+    .card.otro:hover .card-number { color:var(--accent4) !important; }
     .card:not(.locked):hover .card-arrow { border-color:var(--accent); color:var(--accent); background:rgba(0,229,160,0.08); }
+    .card.otro:hover .card-arrow { border-color:var(--accent4) !important; color:var(--accent4) !important; background:rgba(192,132,252,0.08) !important; }
     .card-top { display:flex; align-items:center; justify-content:space-between; }
     .card-number { font-family:'Syne',sans-serif; font-size:30px; font-weight:800; color:var(--surface2); line-height:1; transition:color .2s; }
+    .card-number.otro-icon { font-size:22px; color:rgba(192,132,252,0.25); }
     .card-arrow { width:26px; height:26px; border-radius:50%; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:13px; transition:all .2s; flex-shrink:0; }
     .card-title { font-size:12px; font-weight:600; color:var(--text-bright); line-height:1.4; }
     .card.locked .card-title { color:var(--text-dim); }
@@ -84,9 +95,11 @@
     .chip-multi  { background:rgba(167,139,250,0.12); color:#a78bfa;        border:1px solid rgba(167,139,250,0.25); }
     .chip-repo   { background:rgba(0,153,255,0.10);   color:var(--accent2); border:1px solid rgba(0,153,255,0.2); }
     .chip-locked { background:rgba(255,255,255,0.04); color:var(--text-dim);border:1px solid var(--border); }
+    .chip-otro   { background:rgba(192,132,252,0.12); color:var(--accent4); border:1px solid rgba(192,132,252,0.25); }
     .chip-live::before  { content:''; width:5px;height:5px;border-radius:50%;background:var(--accent);animation:blink 1.8s infinite; }
     .chip-multi::before { content:''; width:5px;height:5px;border-radius:50%;background:#a78bfa; }
     .chip-repo::before  { content:''; width:5px;height:5px;border-radius:50%;background:var(--accent2); }
+    .chip-otro::before  { content:''; width:5px;height:5px;border-radius:50%;background:var(--accent4); animation:blink 2.2s infinite; }
     .expand-section { border-top:1px solid var(--border); }
     .collapsible { overflow:hidden; max-height:0; transition:max-height .38s cubic-bezier(0.4,0,0.2,1); }
     .collapsible.open { max-height:800px; }
@@ -129,43 +142,18 @@
 
     /* ── SECCIÓN IMÁGENES ── */
     #img-section { margin-bottom:60px; }
-
-    /* filtro de ejercicio */
     .img-filters { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
-    .img-filter-btn {
-      padding:4px 14px; border-radius:20px; font-size:10px; font-weight:600;
-      letter-spacing:0.06em; cursor:pointer; border:1px solid var(--border);
-      background:var(--surface); color:var(--text-dim); font-family:'JetBrains Mono',monospace;
-      transition:all .15s;
-    }
+    .img-filter-btn { padding:4px 14px; border-radius:20px; font-size:10px; font-weight:600; letter-spacing:0.06em; cursor:pointer; border:1px solid var(--border); background:var(--surface); color:var(--text-dim); font-family:'JetBrains Mono',monospace; transition:all .15s; }
     .img-filter-btn:hover { border-color:var(--img-accent); color:var(--img-accent); }
     .img-filter-btn.active { background:rgba(245,158,11,0.12); border-color:var(--img-accent); color:var(--img-accent); }
-
-    /* galería global */
-    .global-img-grid {
-      display:grid;
-      grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-      gap:10px;
-      margin-bottom:32px;
-    }
-    .global-img-thumb {
-      aspect-ratio:4/3; border-radius:6px; overflow:hidden;
-      border:1px solid var(--border); cursor:pointer;
-      transition:border-color .2s,transform .2s,box-shadow .2s;
-      background:var(--surface2); position:relative;
-    }
+    .global-img-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:10px; margin-bottom:32px; }
+    .global-img-thumb { aspect-ratio:4/3; border-radius:6px; overflow:hidden; border:1px solid var(--border); cursor:pointer; transition:border-color .2s,transform .2s,box-shadow .2s; background:var(--surface2); position:relative; }
     .global-img-thumb:hover { border-color:var(--img-accent); transform:scale(1.03); box-shadow:0 6px 24px rgba(0,0,0,0.5); }
     .global-img-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
-    .global-img-thumb .git-overlay {
-      position:absolute; inset:0; background:linear-gradient(transparent 45%,rgba(0,0,0,0.85));
-      display:flex; flex-direction:column; justify-content:flex-end; padding:8px;
-      opacity:0; transition:opacity .2s;
-    }
+    .global-img-thumb .git-overlay { position:absolute; inset:0; background:linear-gradient(transparent 45%,rgba(0,0,0,0.85)); display:flex; flex-direction:column; justify-content:flex-end; padding:8px; opacity:0; transition:opacity .2s; }
     .global-img-thumb:hover .git-overlay { opacity:1; }
     .git-overlay-name { font-size:10px; color:#fff; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .git-overlay-ex   { font-size:9px; color:var(--img-accent); margin-top:2px; }
-
-    /* tabla de referencias */
     .ref-table-wrap { border:1px solid var(--border); border-radius:8px; overflow:hidden; background:var(--surface); }
     .ref-table { width:100%; border-collapse:collapse; font-size:11px; }
     .ref-table thead tr { background:var(--surface2); border-bottom:1px solid var(--border); }
@@ -181,7 +169,6 @@
     .ref-table td.td-name { font-weight:600; color:var(--text-bright); max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .ref-table td.td-ex { color:var(--accent2); font-size:10px; white-space:nowrap; }
     .ref-table td.td-path { color:var(--text-dim); font-size:10px; max-width:260px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-    .ref-table td.td-ext { }
     .ref-table td.td-links { white-space:nowrap; }
     .ref-link { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:4px; font-size:9px; font-weight:600; text-decoration:none; border:1px solid; transition:all .15s; }
     .ref-link-raw  { border-color:rgba(245,158,11,0.3); color:var(--img-accent); background:rgba(245,158,11,0.06); }
@@ -195,16 +182,37 @@
     .ext-svg  { background:rgba(255,107,53,0.10); color:var(--accent3); border:1px solid rgba(255,107,53,0.2); }
     .ext-webp { background:rgba(245,158,11,0.10); color:var(--img-accent); border:1px solid rgba(245,158,11,0.2); }
     .ext-other{ background:rgba(255,255,255,0.05); color:var(--text-dim); border:1px solid var(--border); }
-
-    /* search box */
     .img-search-wrap { position:relative; margin-bottom:16px; }
     .img-search { width:100%; padding:9px 14px 9px 36px; background:var(--surface); border:1px solid var(--border); border-radius:6px; color:var(--text); font-family:'JetBrains Mono',monospace; font-size:12px; outline:none; transition:border-color .2s; }
     .img-search:focus { border-color:var(--img-accent); }
     .img-search::placeholder { color:var(--text-dim); }
     .img-search-icon { position:absolute; left:11px; top:50%; transform:translateY(-50%); color:var(--text-dim); font-size:13px; pointer-events:none; }
-
-    /* empty state */
     .img-empty { padding:40px; text-align:center; color:var(--text-dim); font-size:12px; }
+
+    /* ── OTROS section banner ── */
+    .otros-banner {
+      background: linear-gradient(135deg, rgba(192,132,252,0.06) 0%, rgba(0,153,255,0.04) 100%);
+      border: 1px solid rgba(192,132,252,0.2);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      font-size: 11px;
+      color: var(--text-dim);
+      line-height: 1.7;
+    }
+    .otros-banner strong { color: var(--accent4); }
+
+    /* ── card "otro" live preview button ── */
+    .otro-live-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 5px; font-size: 11px; font-weight: 600;
+      text-decoration: none; border: 1px solid rgba(192,132,252,0.3);
+      color: var(--accent4); background: rgba(192,132,252,0.07);
+      transition: all .2s; width: 100%; justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .otro-live-btn:hover { background:rgba(192,132,252,0.14); border-color:var(--accent4); }
+    .otro-live-btn::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--accent4); animation:blink 2s infinite; }
 
     @media(max-width:640px){
       .stats-bar{flex-direction:column;}
@@ -240,49 +248,51 @@
 
   <div class="stats-bar">
     <div class="stat-item"><div class="stat-label">Ejercicios</div><div class="stat-value" id="stat-count">— <small>/ total</small></div></div>
+    <div class="stat-item"><div class="stat-label">Otros trabajos</div><div class="stat-value" id="stat-otros">— <small>/ total</small></div></div>
     <div class="stat-item"><div class="stat-label">Con live</div><div class="stat-value" id="stat-live">— <small>live</small></div></div>
     <div class="stat-item"><div class="stat-label">Páginas HTML</div><div class="stat-value" id="stat-pages">— <small>total</small></div></div>
     <div class="stat-item"><div class="stat-label">Imágenes</div><div class="stat-value" id="stat-imgs">— <small>total</small></div></div>
   </div>
 
+  <!-- ══ EJERCICIOS ══ -->
   <div class="section-header">
     <span class="section-title">// ejercicios</span>
     <div class="section-line"></div>
     <span class="badge badge-orange" id="badge-count">cargando...</span>
   </div>
-
   <div id="last-updated" class="last-updated" style="display:none"></div>
-
   <div class="exercises-grid" id="grid">
     <div class="loading-state"><div class="spinner"></div><span>Escaneando repositorio...</span></div>
   </div>
 
-  <!-- ══════════════════════════════════════════════
-       SECCIÓN DE IMÁGENES
-  ══════════════════════════════════════════════ -->
-  <div id="img-section" style="display:none">
+  <!-- ══ OTROS TRABAJOS ══ -->
+  <div id="otros-section" style="display:none; margin-bottom:60px;">
+    <div class="section-header" style="margin-top:8px;">
+      <span class="section-title" style="color:var(--accent4)">// otros trabajos</span>
+      <div class="section-line"></div>
+      <span class="badge badge-purple" id="badge-otros-count">cargando...</span>
+    </div>
+    <div class="otros-banner">
+      <strong>Trabajos y escritos</strong> — Carpetas que no siguen el patrón <code style="color:var(--accent2)">ejercicio-N</code> pero contienen páginas HTML. Hacé clic en la card para abrir en GitHub Pages.
+    </div>
+    <div class="otros-grid" id="otros-grid"></div>
+  </div>
 
+  <!-- ══ IMÁGENES ══ -->
+  <div id="img-section" style="display:none">
     <div class="section-header" style="margin-top:8px">
       <span class="section-title">// imágenes</span>
       <div class="section-line"></div>
       <span class="badge badge-amber" id="badge-imgs-count">cargando...</span>
     </div>
-
-    <!-- Búsqueda -->
     <div class="img-search-wrap">
       <span class="img-search-icon">⌕</span>
       <input class="img-search" id="img-search" type="text" placeholder="Buscar por nombre, ejercicio o extensión…" oninput="filterImgs()"/>
     </div>
-
-    <!-- Filtros por ejercicio -->
     <div class="img-filters" id="img-filters">
       <button class="img-filter-btn active" data-ex="all" onclick="setExFilter(this)">Todos</button>
     </div>
-
-    <!-- Galería -->
     <div class="global-img-grid" id="global-img-grid"></div>
-
-    <!-- Tabla de referencias -->
     <div class="section-header" style="margin-top:8px;margin-bottom:14px">
       <span class="section-title">// referencias</span>
       <div class="section-line"></div>
@@ -292,22 +302,14 @@
       <table class="ref-table" id="ref-table">
         <thead>
           <tr>
-            <th>#</th>
-            <th>Vista</th>
-            <th>Nombre</th>
-            <th>Ejercicio</th>
-            <th>Ruta</th>
-            <th>Tipo</th>
-            <th>Links</th>
+            <th>#</th><th>Vista</th><th>Nombre</th><th>Carpeta</th><th>Ruta</th><th>Tipo</th><th>Links</th>
           </tr>
         </thead>
         <tbody id="ref-tbody"></tbody>
       </table>
       <div class="img-empty" id="ref-empty" style="display:none">No se encontraron imágenes con ese filtro.</div>
     </div>
-
   </div>
-  <!-- fin sección imágenes -->
 
   <footer>
     <div class="footer-inner">
@@ -341,6 +343,9 @@ const RAW=`https://raw.githubusercontent.com/${OWNER}/${REPO}/main`;
 const H={Accept:'application/vnd.github.v3+json'};
 const IMG_EXT=['.png','.jpg','.jpeg','.gif','.svg','.webp','.bmp'];
 
+// carpetas que se ignoran (no son ejercicios ni "otros trabajos")
+const SKIP_FOLDERS=['.github','node_modules','assets'];
+
 function timeAgo(d){const s=(Date.now()-new Date(d))/1000;if(s<60)return'hace un momento';if(s<3600)return`hace ${Math.floor(s/60)}m`;if(s<86400)return`hace ${Math.floor(s/3600)}h`;if(s<604800)return`hace ${Math.floor(s/86400)}d`;return new Date(d).toLocaleDateString('es-UY',{day:'numeric',month:'short'});}
 function pad(n){return String(n).padStart(2,'0');}
 function isImg(n){return IMG_EXT.some(e=>n.toLowerCase().endsWith(e));}
@@ -367,7 +372,7 @@ async function scan(path){
 async function chkLive(u){try{const r=await fetch(u,{method:'HEAD'});return r.ok;}catch{return false;}}
 function pgUrl(p){return`${PAGES}/${p}`;}
 
-// Lightbox
+// ── Lightbox ──
 let LB_IMGS=[],LB_IDX=0;
 function openLb(imgs,idx){LB_IMGS=imgs;LB_IDX=idx;renderLb();document.getElementById('lightbox').classList.add('active');document.addEventListener('keydown',lbKey);}
 function closeLb(){document.getElementById('lightbox').classList.remove('active');document.removeEventListener('keydown',lbKey);}
@@ -376,7 +381,7 @@ function lbKey(e){if(e.key==='ArrowRight')lbMove(1);if(e.key==='ArrowLeft')lbMov
 function renderLb(){const i=LB_IMGS[LB_IDX];document.getElementById('lb-img').src=i.rawUrl;document.getElementById('lb-name').textContent=i.name;document.getElementById('lb-counter').textContent=`${LB_IDX+1} / ${LB_IMGS.length}`;}
 window.openLb=openLb; window.closeLb=closeLb; window.lbMove=lbMove;
 
-// Toggle expand (cards)
+// ── Toggle expand (cards) ──
 function toggleSec(btn){
   const panel=btn.previousElementSibling;
   const open=panel.classList.toggle('open');
@@ -387,9 +392,9 @@ function toggleSec(btn){
 }
 window.toggleSec=toggleSec;
 
-// ── SECCIÓN IMÁGENES ────────────────────────────────────
-let ALL_IMGS_DATA = [];   // [{name,path,rawUrl,ghUrl,ejercicio,ext}, ...]
-let ACTIVE_EX_FILTER = 'all';
+// ── Sección imágenes ──
+let ALL_IMGS_DATA=[];
+let ACTIVE_EX_FILTER='all';
 
 function extBadge(name){
   const e=name.split('.').pop().toLowerCase();
@@ -399,10 +404,10 @@ function extBadge(name){
 
 function buildImgSection(allImgs){
   ALL_IMGS_DATA=allImgs;
-
-  // filtros únicos por ejercicio
-  const exs=[...new Set(allImgs.map(i=>i.ejercicio))].sort((a,b)=>parseInt(a.split('-')[1])-parseInt(b.split('-')[1]));
+  const exs=[...new Set(allImgs.map(i=>i.ejercicio))].sort();
   const filterBar=document.getElementById('img-filters');
+  // clear previous dynamic buttons (keep "Todos")
+  [...filterBar.querySelectorAll('[data-ex]:not([data-ex="all"])')].forEach(b=>b.remove());
   exs.forEach(ex=>{
     const btn=document.createElement('button');
     btn.className='img-filter-btn';
@@ -411,7 +416,6 @@ function buildImgSection(allImgs){
     btn.onclick=()=>setExFilter(btn);
     filterBar.appendChild(btn);
   });
-
   renderImgs(allImgs);
   document.getElementById('img-section').style.display='block';
   document.getElementById('badge-imgs-count').textContent=`${allImgs.length} imágenes`;
@@ -434,9 +438,7 @@ function setExFilter(btn){
 }
 window.setExFilter=setExFilter;
 
-function filterImgs(){
-  renderImgs(getFiltered());
-}
+function filterImgs(){renderImgs(getFiltered());}
 window.filterImgs=filterImgs;
 
 function renderImgs(imgs){
@@ -444,32 +446,17 @@ function renderImgs(imgs){
   const tbody=document.getElementById('ref-tbody');
   const empty=document.getElementById('ref-empty');
   const countLbl=document.getElementById('ref-count-label');
-
-  grid.innerHTML='';
-  tbody.innerHTML='';
+  grid.innerHTML=''; tbody.innerHTML='';
   countLbl.textContent=`${imgs.length} archivo${imgs.length!==1?'s':''}`;
-
-  if(!imgs.length){
-    empty.style.display='block';
-    return;
-  }
+  if(!imgs.length){empty.style.display='block';return;}
   empty.style.display='none';
-
-  // galería
   imgs.forEach((img,idx)=>{
     const div=document.createElement('div');
     div.className='global-img-thumb';
-    div.innerHTML=`
-      <img src="${img.rawUrl}" alt="${img.name}" loading="lazy" onerror="this.parentElement.style.display='none'"/>
-      <div class="git-overlay">
-        <div class="git-overlay-name">${img.name}</div>
-        <div class="git-overlay-ex">${img.ejercicio}</div>
-      </div>`;
+    div.innerHTML=`<img src="${img.rawUrl}" alt="${img.name}" loading="lazy" onerror="this.parentElement.style.display='none'"/><div class="git-overlay"><div class="git-overlay-name">${img.name}</div><div class="git-overlay-ex">${img.ejercicio}</div></div>`;
     div.onclick=()=>openLb(imgs,idx);
     grid.appendChild(div);
   });
-
-  // tabla
   imgs.forEach((img,idx)=>{
     const tr=document.createElement('tr');
     tr.innerHTML=`
@@ -487,135 +474,262 @@ function renderImgs(imgs){
   });
 }
 
-// ────────────────────────────────────────────────────────
+// ── Build "otros" card ──
+function buildOtroCard(folder, commit, htmls, imgs, liveMap, idx) {
+  const msg = commit ? commit.commit.message.split('\n')[0] : '—';
+  const hash = commit ? commit.sha.slice(0, 7) : '';
+  const date = commit ? timeAgo(commit.commit.author.date) : '';
+  const hasImgs = imgs.length > 0;
 
+  // Detectar si hay index.html o usar el primer html
+  const indexHtml = htmls.find(h => h.name.toLowerCase() === 'index.html') || htmls[0];
+  const liveUrl = indexHtml ? pgUrl(indexHtml.path) : null;
+  const isLive = liveUrl && liveMap[indexHtml.path];
+
+  const card = document.createElement('div');
+  card.className = 'card otro';
+  card.style.animationDelay = `${idx * 0.05}s`;
+
+  // multi-html block
+  let htmlBlock = '';
+  if (htmls.length > 1) {
+    const items = htmls.map(h => {
+      const live = liveMap[h.path];
+      const href = live ? pgUrl(h.path) : h.ghUrl;
+      const sub = h.path.replace(folder.name + '/', '');
+      const st = live
+        ? `<span class="html-item-status" style="color:var(--accent4)">● live</span>`
+        : `<span class="html-item-status" style="color:var(--text-dim)">repo</span>`;
+      return `<a class="html-item" href="${href}" target="_blank" onclick="event.stopPropagation()" style="--hover-color:var(--accent4)"><span class="html-item-icon">⬡</span><span class="html-item-name">${h.name}</span><span class="html-item-path">${sub}</span>${st}</a>`;
+    }).join('');
+    htmlBlock = `<div class="expand-section"><div class="collapsible"><div class="collapsible-inner"><div class="list-label" style="color:var(--accent4)">// páginas html</div>${items}</div></div><button class="expand-btn" onclick="toggleSec(this)" data-lo="Ocultar páginas" data-lc="Ver ${htmls.length} páginas"><span style="display:flex;align-items:center;gap:6px"><span style="opacity:0.5">⬡</span><span class="btn-label">Ver ${htmls.length} páginas</span></span><span class="arrow">▼</span></button></div>`;
+  }
+
+  // imgs block
+  let imgBlock = '';
+  if (hasImgs) {
+    const key = `otro_imgs_${idx}`;
+    const thumbs = imgs.map((img, i) =>
+      `<div class="img-thumb" onclick="openLb(window.__IS['${key}'],${i});event.stopPropagation()"><img src="${img.rawUrl}" alt="${img.name}" loading="lazy" onerror="this.parentElement.style.display='none'"/><div class="img-label">${img.name}</div></div>`
+    ).join('');
+    imgBlock = `<div class="expand-section"><div class="collapsible"><div class="collapsible-inner"><div class="list-label" style="color:var(--img-accent);opacity:0.75;margin-bottom:10px">// imágenes · ${imgs.length} archivo${imgs.length > 1 ? 's' : ''}</div><div class="img-grid">${thumbs}</div></div></div><button class="expand-btn img-btn" onclick="toggleSec(this)" data-lo="Ocultar imágenes" data-lc="Ver imágenes (${imgs.length})"><span style="display:flex;align-items:center;gap:6px"><span>🖼</span><span class="btn-label">Ver imágenes (${imgs.length})</span></span><span class="arrow">▼</span></button></div>`;
+    if (!window.__IS) window.__IS = {};
+    window.__IS[key] = imgs;
+  }
+
+  const chipOtro = isLive
+    ? `<span class="chip chip-otro">● live</span>`
+    : `<span class="chip chip-repo">repo</span>`;
+
+  // live button (only when single page or index.html detected)
+  const liveBtn = (htmls.length === 1 || indexHtml) && liveUrl
+    ? `<div style="padding:0 22px 16px"><a class="otro-live-btn" href="${liveUrl}" target="_blank" onclick="event.stopPropagation()">Abrir en GitHub Pages ↗</a></div>`
+    : '';
+
+  card.innerHTML = `
+    <div class="card-inner" style="cursor:${liveUrl ? 'pointer' : 'default'}">
+      <div class="card-top">
+        <div class="card-number otro-icon">✦</div>
+        <div class="card-arrow" style="border-color:rgba(192,132,252,0.3);color:var(--accent4)">↗</div>
+      </div>
+      <div class="card-title" style="color:var(--accent4)">${folder.name}</div>
+      <div class="card-commit">${hash ? `<span class="commit-hash" style="color:var(--accent4)">${hash}</span>` : ''}<span style="overflow:hidden;text-overflow:ellipsis">${msg.length > 52 ? msg.slice(0, 52) + '…' : msg}</span></div>
+      <div class="card-footer">
+        <div class="card-path"><span class="dir">~/</span>${folder.name}/</div>
+        <div style="display:flex;align-items:center;gap:8px">${date ? `<div class="card-date">${date}</div>` : ''}${chipOtro}</div>
+      </div>
+    </div>
+    ${liveBtn}
+    ${htmls.length > 1 ? htmlBlock : ''}
+    ${imgBlock}`;
+
+  // click on inner opens live if single page
+  if (liveUrl && htmls.length <= 1) {
+    card.querySelector('.card-inner').addEventListener('click', () => window.open(liveUrl, '_blank'));
+  }
+
+  return card;
+}
+
+// ── Main ──
 async function init(){
-  const grid=document.getElementById('grid');
+  const grid = document.getElementById('grid');
   try{
-    const [contents,commits]=await Promise.all([api('/contents'),api('/commits?per_page=1')]);
-    const folders=contents.filter(f=>f.type==='dir'&&/^ejercicio-\d+$/i.test(f.name)).sort((a,b)=>parseInt(a.name.split('-')[1])-parseInt(b.name.split('-')[1]));
+    const [contents, commits] = await Promise.all([api('/contents'), api('/commits?per_page=1')]);
 
-    document.getElementById('stat-count').innerHTML=`${folders.length} <small>/ total</small>`;
-    document.getElementById('badge-count').textContent=`${folders.length} ejercicios`;
+    // Split folders into ejercicios vs otros
+    const allDirs = contents.filter(f =>
+      f.type === 'dir' && !SKIP_FOLDERS.includes(f.name.toLowerCase())
+    );
+    const ejercicioFolders = allDirs
+      .filter(f => /^ejercicio-\d+$/i.test(f.name))
+      .sort((a, b) => parseInt(a.name.split('-')[1]) - parseInt(b.name.split('-')[1]));
+    const otrosFolders = allDirs
+      .filter(f => !/^ejercicio-\d+$/i.test(f.name))
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    document.getElementById('stat-count').innerHTML = `${ejercicioFolders.length} <small>/ total</small>`;
+    document.getElementById('badge-count').textContent = `${ejercicioFolders.length} ejercicios`;
 
     try{
-      const langs=await api('/languages');
-      const tot=Object.values(langs).reduce((a,b)=>a+b,0);
-      if(langs.HTML)document.getElementById('badge-html').textContent=`● HTML ${((langs.HTML/tot)*100).toFixed(1)}%`;
-      if(langs.CSS) document.getElementById('badge-css').textContent =`● CSS ${((langs.CSS/tot)*100).toFixed(1)}%`;
-      document.getElementById('footer-lang').textContent=Object.keys(langs).join(' + ');
+      const langs = await api('/languages');
+      const tot = Object.values(langs).reduce((a, b) => a + b, 0);
+      if(langs.HTML) document.getElementById('badge-html').textContent = `● HTML ${((langs.HTML/tot)*100).toFixed(1)}%`;
+      if(langs.CSS)  document.getElementById('badge-css').textContent  = `● CSS ${((langs.CSS/tot)*100).toFixed(1)}%`;
+      document.getElementById('footer-lang').textContent = Object.keys(langs).join(' + ');
     }catch(_){}
 
-    const lu=document.getElementById('last-updated');
-    lu.style.display='flex';
-    lu.textContent=`Escaneado en tiempo real · ${new Date().toLocaleTimeString('es-UY')}`;
+    const lu = document.getElementById('last-updated');
+    lu.style.display = 'flex';
+    lu.textContent = `Escaneado en tiempo real · ${new Date().toLocaleTimeString('es-UY')}`;
 
-    const [commitInfos,scanResults]=await Promise.all([
-      Promise.all(folders.map(f=>api(`/commits?path=${encodeURIComponent(f.name)}&per_page=1`).then(d=>d[0]||null).catch(()=>null))),
-      Promise.all(folders.map(f=>scan(f.name)))
+    // Scan everything in parallel
+    const allFolders = [...ejercicioFolders, ...otrosFolders];
+    const [commitInfos, scanResults] = await Promise.all([
+      Promise.all(allFolders.map(f =>
+        api(`/commits?path=${encodeURIComponent(f.name)}&per_page=1`).then(d => d[0] || null).catch(() => null)
+      )),
+      Promise.all(allFolders.map(f => scan(f.name)))
     ]);
 
-    const allHtmls=scanResults.flatMap(s=>s.htmls);
-    const liveChecks=await Promise.all(allHtmls.map(h=>chkLive(pgUrl(h.path))));
-    const liveMap={};
-    allHtmls.forEach((h,i)=>{liveMap[h.path]=liveChecks[i];});
+    // Live checks for all htmls
+    const allHtmls = scanResults.flatMap(s => s.htmls);
+    const liveChecks = await Promise.all(allHtmls.map(h => chkLive(pgUrl(h.path))));
+    const liveMap = {};
+    allHtmls.forEach((h, i) => { liveMap[h.path] = liveChecks[i]; });
 
-    let totPages=0,totImgs=0,liveEx=0;
-    grid.innerHTML='';
+    let totPages = 0, totImgs = 0, liveEx = 0;
+    grid.innerHTML = '';
+    const globalImgList = [];
 
-    const imgStore={};
+    // ── Render ejercicios ──
+    ejercicioFolders.forEach((folder, i) => {
+      const num = parseInt(folder.name.split('-')[1]);
+      const commit = commitInfos[i];
+      const { htmls, imgs } = scanResults[i];
+      const msg = commit ? commit.commit.message.split('\n')[0] : '—';
+      const hash = commit ? commit.sha.slice(0, 7) : '';
+      const date = commit ? timeAgo(commit.commit.author.date) : '';
+      const liveHtmls = htmls.filter(h => liveMap[h.path]);
+      const hasLive = liveHtmls.length > 0;
+      const hasMulti = htmls.length > 1;
+      const hasSingle = htmls.length === 1;
+      const hasImgs = imgs.length > 0;
+      const isLocked = !commit;
 
-    // Acumular todas las imágenes con metadato de ejercicio
-    const globalImgList=[];
-
-    folders.forEach((folder,i)=>{
-      const num=parseInt(folder.name.split('-')[1]);
-      const commit=commitInfos[i];
-      const{htmls,imgs}=scanResults[i];
-      const msg=commit?commit.commit.message.split('\n')[0]:'—';
-      const hash=commit?commit.sha.slice(0,7):'';
-      const date=commit?timeAgo(commit.commit.author.date):'';
-      const liveHtmls=htmls.filter(h=>liveMap[h.path]);
-      const hasLive=liveHtmls.length>0;
-      const hasMulti=htmls.length>1;
-      const hasSingle=htmls.length===1;
-      const hasImgs=imgs.length>0;
-      const isLocked=!commit;
-
-      totPages+=htmls.length; totImgs+=imgs.length;
+      totPages += htmls.length; totImgs += imgs.length;
       if(hasLive) liveEx++;
 
-      imgStore[i]=imgs;
-
-      // añadir a lista global
-      imgs.forEach(img=>{
-        const ext=img.name.split('.').pop().toLowerCase();
-        globalImgList.push({...img, ejercicio:folder.name, ext});
+      imgs.forEach(img => {
+        const ext = img.name.split('.').pop().toLowerCase();
+        globalImgList.push({...img, ejercicio: folder.name, ext});
       });
 
-      let chipHTML,arrowIcon,cardClass;
+      let chipHTML, arrowIcon, cardClass;
       if(isLocked){cardClass='locked';chipHTML=`<span class="chip chip-locked">🔒 sin contenido</span>`;arrowIcon='—';}
       else if(hasLive&&!hasMulti){cardClass='available';chipHTML=`<span class="chip chip-live">Live</span>`;arrowIcon='↗';}
       else if(hasMulti){cardClass='multi';const lc=liveHtmls.length;chipHTML=`<span class="chip chip-multi">${htmls.length} páginas${lc?` · ${lc} live`:''}</span>`;arrowIcon='↕';}
       else if(hasSingle&&!hasLive){cardClass='github-only';chipHTML=`<span class="chip chip-repo">Solo repo</span>`;arrowIcon='↗';}
       else{cardClass='github-only';chipHTML=`<span class="chip chip-repo">Solo repo</span>`;arrowIcon='↗';}
 
-      const card=document.createElement('div');
-      card.className=`card ${cardClass}`;
-      card.style.animationDelay=`${i*0.04}s`;
+      const card = document.createElement('div');
+      card.className = `card ${cardClass}`;
+      card.style.animationDelay = `${i * 0.04}s`;
 
-      let htmlBlock='';
+      let htmlBlock = '';
       if(hasMulti){
-        const items=htmls.map(h=>{
-          const live=liveMap[h.path];
-          const href=live?pgUrl(h.path):h.ghUrl;
-          const sub=h.path.replace(folder.name+'/','');
-          const st=live?`<span class="html-item-status" style="color:var(--accent)">● live</span>`:`<span class="html-item-status" style="color:var(--text-dim)">repo</span>`;
-          return`<a class="html-item" href="${href}" target="_blank" onclick="event.stopPropagation()"><span class="html-item-icon">⬡</span><span class="html-item-name">${h.name}</span><span class="html-item-path">${sub}</span>${st}</a>`;
+        const items = htmls.map(h => {
+          const live = liveMap[h.path];
+          const href = live ? pgUrl(h.path) : h.ghUrl;
+          const sub = h.path.replace(folder.name + '/', '');
+          const st = live
+            ? `<span class="html-item-status" style="color:var(--accent)">● live</span>`
+            : `<span class="html-item-status" style="color:var(--text-dim)">repo</span>`;
+          return `<a class="html-item" href="${href}" target="_blank" onclick="event.stopPropagation()"><span class="html-item-icon">⬡</span><span class="html-item-name">${h.name}</span><span class="html-item-path">${sub}</span>${st}</a>`;
         }).join('');
-        htmlBlock=`<div class="expand-section"><div class="collapsible"><div class="collapsible-inner"><div class="list-label">// páginas html</div>${items}</div></div><button class="expand-btn" onclick="toggleSec(this)" data-lo="Ocultar páginas" data-lc="Ver páginas"><span style="display:flex;align-items:center;gap:6px"><span style="opacity:0.5">⬡</span><span class="btn-label">Ver páginas</span></span><span class="arrow">▼</span></button></div>`;
+        htmlBlock = `<div class="expand-section"><div class="collapsible"><div class="collapsible-inner"><div class="list-label">// páginas html</div>${items}</div></div><button class="expand-btn" onclick="toggleSec(this)" data-lo="Ocultar páginas" data-lc="Ver páginas"><span style="display:flex;align-items:center;gap:6px"><span style="opacity:0.5">⬡</span><span class="btn-label">Ver páginas</span></span><span class="arrow">▼</span></button></div>`;
       }
 
-      let imgBlock='';
+      let imgBlock = '';
       if(hasImgs){
-        const key=`imgs_${i}`;
-        const thumbs=imgs.map((img,idx)=>`<div class="img-thumb" onclick="openLb(window.__IS['${key}'],${idx});event.stopPropagation()"><img src="${img.rawUrl}" alt="${img.name}" loading="lazy" onerror="this.parentElement.style.display='none'"/><div class="img-label">${img.name}</div></div>`).join('');
-        imgBlock=`<div class="expand-section"><div class="collapsible"><div class="collapsible-inner"><div class="list-label" style="color:var(--img-accent);opacity:0.75;margin-bottom:10px">// imágenes · ${imgs.length} archivo${imgs.length>1?'s':''}</div><div class="img-grid">${thumbs}</div></div></div><button class="expand-btn img-btn" onclick="toggleSec(this)" data-lo="Ocultar imágenes" data-lc="Ver imágenes (${imgs.length})"><span style="display:flex;align-items:center;gap:6px"><span>🖼</span><span class="btn-label">Ver imágenes (${imgs.length})</span></span><span class="arrow">▼</span></button></div>`;
-        if(!window.__IS) window.__IS={};
-        window.__IS[key]=imgs;
+        const key = `imgs_${i}`;
+        const thumbs = imgs.map((img, idx) =>
+          `<div class="img-thumb" onclick="openLb(window.__IS['${key}'],${idx});event.stopPropagation()"><img src="${img.rawUrl}" alt="${img.name}" loading="lazy" onerror="this.parentElement.style.display='none'"/><div class="img-label">${img.name}</div></div>`
+        ).join('');
+        imgBlock = `<div class="expand-section"><div class="collapsible"><div class="collapsible-inner"><div class="list-label" style="color:var(--img-accent);opacity:0.75;margin-bottom:10px">// imágenes · ${imgs.length} archivo${imgs.length > 1 ? 's' : ''}</div><div class="img-grid">${thumbs}</div></div></div><button class="expand-btn img-btn" onclick="toggleSec(this)" data-lo="Ocultar imágenes" data-lc="Ver imágenes (${imgs.length})"><span style="display:flex;align-items:center;gap:6px"><span>🖼</span><span class="btn-label">Ver imágenes (${imgs.length})</span></span><span class="arrow">▼</span></button></div>`;
+        if(!window.__IS) window.__IS = {};
+        window.__IS[key] = imgs;
       }
 
-      card.innerHTML=`
+      card.innerHTML = `
         <div class="card-inner">
           <div class="card-top"><div class="card-number">${pad(num)}</div><div class="card-arrow">${arrowIcon}</div></div>
           <div class="card-title">${folder.name}</div>
-          <div class="card-commit">${hash?`<span class="commit-hash">${hash}</span>`:''}<span style="overflow:hidden;text-overflow:ellipsis">${msg.length>44?msg.slice(0,44)+'…':msg}</span></div>
+          <div class="card-commit">${hash ? `<span class="commit-hash">${hash}</span>` : ''}<span style="overflow:hidden;text-overflow:ellipsis">${msg.length > 44 ? msg.slice(0, 44) + '…' : msg}</span></div>
           <div class="card-footer">
             <div class="card-path"><span class="dir">~/</span>${folder.name}/</div>
-            <div style="display:flex;align-items:center;gap:8px">${date?`<div class="card-date">${date}</div>`:''}${chipHTML}</div>
+            <div style="display:flex;align-items:center;gap:8px">${date ? `<div class="card-date">${date}</div>` : ''}${chipHTML}</div>
           </div>
         </div>
         ${htmlBlock}${imgBlock}`;
 
-      const inner=card.querySelector('.card-inner');
-      if(cardClass==='available'){inner.style.cursor='pointer';inner.addEventListener('click',()=>window.open(pgUrl(liveHtmls[0].path),'_blank'));}
-      else if(cardClass==='github-only'){const dest=hasSingle?htmls[0].ghUrl:folder.html_url;inner.style.cursor='pointer';inner.addEventListener('click',()=>window.open(dest,'_blank'));}
+      const inner = card.querySelector('.card-inner');
+      if(cardClass === 'available'){inner.style.cursor = 'pointer'; inner.addEventListener('click', () => window.open(pgUrl(liveHtmls[0].path), '_blank'));}
+      else if(cardClass === 'github-only'){const dest = hasSingle ? htmls[0].ghUrl : folder.html_url; inner.style.cursor = 'pointer'; inner.addEventListener('click', () => window.open(dest, '_blank'));}
 
       grid.appendChild(card);
     });
 
-    document.getElementById('stat-live').innerHTML =`${liveEx} <small>live</small>`;
-    document.getElementById('stat-pages').innerHTML=`${totPages} <small>total</small>`;
-    document.getElementById('stat-imgs').innerHTML =`${totImgs} <small>total</small>`;
+    // ── Render "otros" ──
+    const otrosGrid = document.getElementById('otros-grid');
+    const otrosSection = document.getElementById('otros-section');
+    let otroCount = 0;
 
-    // Construir sección global de imágenes
-    if(globalImgList.length>0){
-      window.__GIMGS=globalImgList;
+    // Filter only those that have at least one HTML file
+    const otrosOffset = ejercicioFolders.length;
+    const otrosWithHTML = [];
+
+    otrosFolders.forEach((folder, i) => {
+      const { htmls, imgs } = scanResults[otrosOffset + i];
+      if (htmls.length > 0) otrosWithHTML.push({ folder, commit: commitInfos[otrosOffset + i], htmls, imgs, idx: i });
+    });
+
+    if (otrosWithHTML.length > 0) {
+      otrosSection.style.display = 'block';
+      document.getElementById('badge-otros-count').textContent = `${otrosWithHTML.length} trabajo${otrosWithHTML.length !== 1 ? 's' : ''}`;
+      document.getElementById('stat-otros').innerHTML = `${otrosWithHTML.length} <small>/ total</small>`;
+
+      otrosWithHTML.forEach(({ folder, commit, htmls, imgs }, idx) => {
+        totPages += htmls.length;
+        totImgs += imgs.length;
+        const liveHtmls = htmls.filter(h => liveMap[h.path]);
+        if (liveHtmls.length > 0) liveEx++;
+        otroCount++;
+
+        imgs.forEach(img => {
+          const ext = img.name.split('.').pop().toLowerCase();
+          globalImgList.push({ ...img, ejercicio: folder.name, ext });
+        });
+
+        const cardEl = buildOtroCard(folder, commit, htmls, imgs, liveMap, idx);
+        otrosGrid.appendChild(cardEl);
+      });
+    } else {
+      document.getElementById('stat-otros').innerHTML = `0 <small>/ total</small>`;
+    }
+
+    document.getElementById('stat-live').innerHTML  = `${liveEx} <small>live</small>`;
+    document.getElementById('stat-pages').innerHTML = `${totPages} <small>total</small>`;
+    document.getElementById('stat-imgs').innerHTML  = `${totImgs} <small>total</small>`;
+
+    // ── Galería global de imágenes ──
+    if(globalImgList.length > 0){
+      window.__GIMGS = globalImgList;
       buildImgSection(globalImgList);
     }
 
   }catch(err){
-    grid.innerHTML=`<div class="error-state">⚠ No se pudo conectar con la GitHub API.<br/><span style="color:var(--text-dim);font-size:11px">${err.message}</span><br/><span style="color:var(--text-dim);font-size:11px">Límite: 60 req/hora por IP. Intentá en unos minutos.</span></div>`;
+    grid.innerHTML = `<div class="error-state">⚠ No se pudo conectar con la GitHub API.<br/><span style="color:var(--text-dim);font-size:11px">${err.message}</span><br/><span style="color:var(--text-dim);font-size:11px">Límite: 60 req/hora por IP. Intentá en unos minutos.</span></div>`;
   }
 }
 init();
