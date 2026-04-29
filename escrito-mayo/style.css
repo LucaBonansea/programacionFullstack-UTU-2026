@@ -309,11 +309,16 @@ main{
         width: 370px;
     }
     .columns{
-        margin:0px 23px;
+        margin: 0px 23px;
     }
     .columns > div{
         padding-left: 10px;
         font-size: 14px;
     }
-
+    .menu{
+        gap: 1rem;
+    }
+    .menu > li:last-child {
+        width: 100px;
+    }
 }
