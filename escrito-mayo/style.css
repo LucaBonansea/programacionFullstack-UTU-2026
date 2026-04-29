@@ -39,7 +39,7 @@ header{
 
 .menu{
     display: flex;
-    gap: 2rem;   
+    gap: 2rem;  
 }
 
 li{
@@ -48,9 +48,13 @@ li{
 
 .menu > li > a{
     text-decoration: none;
-    color: white;
+    color: white;   
 }
 
+.menu > li > a:hover{
+    color: #BED199;
+    transition: ease-in-out 0.2s;
+}
 
 /*Logo nav*/
 .logotitile{
@@ -131,6 +135,11 @@ margin: 20px auto;
     font-weight: bold;
     font-size: 0.8rem;
     
+}
+
+.back:hover{
+    background-color: #BED199;
+    transition: ease-in-out 0.2s;
 }
 
 .imgbookmark {
@@ -264,6 +273,12 @@ margin: 20px auto;
     
 }
 
+.plans > div > div:last-child > a:hover{
+    background-color: #BED199;
+    border: 0.2px solid #BED199;
+    transition: ease-in-out 0.2s;
+}
+
 .plans > div > div >  p > span {
     font-size: 2rem;
     font-weight: bold;
@@ -277,4 +292,8 @@ margin: 20px auto;
 .plans > div:last-child > div:last-child > a{
     background-color: #7B7B7B;
     border: 0.2px solid #7B7B7B;
+}
+
+.reward:hover{
+    background-color: red;
 }
