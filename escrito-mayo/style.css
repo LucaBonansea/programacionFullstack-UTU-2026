@@ -34,6 +34,7 @@ header{
     display: flex;
     justify-content: space-between;
     padding: 2rem 12rem;
+    align-items: center;
 }
 
 
@@ -63,6 +64,7 @@ li{
     background-size: contain;
     background-position: center;
     width: 8rem;
+    height: 8rem;
 }
 
 /*Logo main*/
@@ -121,7 +123,7 @@ main{
 }
 
 .Master > p{
-margin: 20px auto;
+    margin: 20px auto;
 }
 
 .back {
@@ -296,4 +298,22 @@ margin: 20px auto;
 
 .reward:hover{
     background-color: red;
+}
+
+/*Media querry*/
+@media (max-width:800px) {
+    .navegation{
+        flex-direction: column;
+    }
+    .info > section{
+        width: 370px;
+    }
+    .columns{
+        margin:0px 23px;
+    }
+    .columns > div{
+        padding-left: 10px;
+        font-size: 14px;
+    }
+
 }
