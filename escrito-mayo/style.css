@@ -300,7 +300,7 @@ main{
     background-color: red;
 }
 
-/*Media querry*/
+/*Media query*/
 @media (max-width:800px) {
     .navegation{
         flex-direction: column;
@@ -319,6 +319,7 @@ main{
         gap: 1rem;
     }
     .menu > li:last-child {
+        padding: 0px;
         width: 100px;
     }
 }
