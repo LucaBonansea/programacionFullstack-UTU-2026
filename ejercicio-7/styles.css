@@ -1,0 +1,9 @@
+.container > .row > div {
+    border: 1px solid black;
+    padding: 20px;
+}
+
+.card-img-top{
+    width: 4px;
+    height: auto;
+}
