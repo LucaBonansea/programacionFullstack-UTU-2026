@@ -36,6 +36,7 @@ let movementPhase = "up";
 let lastRepTime = 0;
 let stableDownFrames = 0;
 let stableUpFrames = 0;
+let activeCameraStream = null;
 const metricHistory = {};
 
 function getFreshDefaultState() {
@@ -85,10 +86,14 @@ const elements = {
     saveGeminiKeyBtn: document.querySelector("#saveGeminiKeyBtn"),
     clearGeminiKeyBtn: document.querySelector("#clearGeminiKeyBtn"),
     heroGoal: document.querySelector("#heroGoal"),
-    motivationalPhrase: document.querySelector("#motivationalPhrase")
+    heroGoalMirror: document.querySelector("#heroGoalMirror"),
+    motivationalPhrase: document.querySelector("#motivationalPhrase"),
+    permissionHint: document.querySelector("#permissionHint")
 };
 
 document.addEventListener("DOMContentLoaded", () => {
+    configureVideoElement();
+    renderPermissionHint();
     setupSpeechRecognition();
     setupPoseDetection();
     bindEvents();
@@ -142,11 +147,72 @@ function bindEvents() {
     elements.routineSelect.addEventListener("change", updateSettings);
 }
 
+function configureVideoElement() {
+    elements.poseVideo.setAttribute("playsinline", "true");
+    elements.poseVideo.setAttribute("webkit-playsinline", "true");
+    elements.poseVideo.muted = true;
+    elements.poseVideo.autoplay = true;
+}
+
+function isIosDevice() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent)
+        || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+}
+
+function isSecureMediaContext() {
+    const safeHosts = ["localhost", "127.0.0.1", "::1"];
+    return window.isSecureContext || location.protocol === "https:" || safeHosts.includes(location.hostname);
+}
+
+function updatePermissionHint(message, type = "") {
+    if (!elements.permissionHint) {
+        return;
+    }
+
+    elements.permissionHint.textContent = message;
+    elements.permissionHint.classList.toggle("warning", type === "warning");
+    elements.permissionHint.classList.toggle("success", type === "success");
+}
+
+function renderPermissionHint() {
+    if (!isSecureMediaContext()) {
+        updatePermissionHint(
+            isIosDevice()
+                ? "En iPhone o iPad, Safari solo habilita camara y microfono si abres la app por HTTPS o localhost."
+                : "La camara y el microfono requieren HTTPS o localhost para funcionar bien.",
+            "warning"
+        );
+        return;
+    }
+
+    if (isIosDevice()) {
+        updatePermissionHint(
+            "En iOS, toca Iniciar y acepta el permiso del navegador. Mantene Safari en primer plano mientras abre la camara.",
+            "success"
+        );
+        return;
+    }
+
+    updatePermissionHint("Toca Iniciar para pedir permisos de camara y, si el navegador lo soporta, tambien de microfono.");
+}
+
+function setCameraOverlayMessage(iconClass, message) {
+    elements.cameraOverlay.innerHTML = `
+        <i class="fa-solid ${iconClass}"></i>
+        <span>${message}</span>
+    `;
+}
+
 function setupSpeechRecognition() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
         elements.voiceTranscript.textContent = "Tu navegador no soporta Web Speech API. La camara puede contar repeticiones igual.";
+        updateMicStatus(false, {
+            variant: isIosDevice() ? "warning" : "muted",
+            icon: "fa-microphone-slash",
+            text: isIosDevice() ? "Voz no compatible" : "Microfono no disponible"
+        });
         return;
     }
 
@@ -167,15 +233,29 @@ function setupSpeechRecognition() {
         });
     };
 
-    recognition.onerror = () => {
-        elements.voiceTranscript.textContent = "No se pudo acceder al microfono. Revisar permisos del navegador.";
+    recognition.onerror = (event) => {
+        elements.voiceTranscript.textContent = getSpeechErrorMessage(event.error);
         isListening = false;
-        updateMicStatus(false);
+        updateMicStatus(false, {
+            variant: "warning",
+            icon: "fa-microphone-slash",
+            text: "Microfono bloqueado"
+        });
     };
 
     recognition.onend = () => {
         if (isListening) {
-            recognition.start();
+            try {
+                recognition.start();
+            } catch (error) {
+                console.warn("No se pudo reiniciar el reconocimiento de voz.", error);
+                isListening = false;
+                updateMicStatus(false, {
+                    variant: "warning",
+                    icon: "fa-microphone-slash",
+                    text: "Microfono pausado"
+                });
+            }
         }
     };
 }
@@ -294,12 +374,16 @@ function normalizeText(text) {
 }
 
 async function startTraining() {
-    startListening();
-    const cameraStarted = await startCamera();
+    const cameraStarted = await startCamera({
+        includeMicrophone: Boolean(recognition)
+    });
 
     if (cameraStarted) {
+        startListening();
         startTimer();
-        elements.voiceTranscript.textContent = "Entrenamiento activo. Usa voz para pausar, reiniciar o terminar.";
+        elements.voiceTranscript.textContent = recognition
+            ? "Entrenamiento activo. Usa voz para pausar, reiniciar o terminar."
+            : "Entrenamiento activo. Este navegador puede contar reps con camara aunque no tenga voz.";
     }
 }
 
@@ -308,10 +392,27 @@ function startListening() {
         return;
     }
 
-    isListening = true;
-    recognition.start();
-    updateMicStatus(true);
-    elements.voiceTranscript.textContent = "Escuchando comandos de voz.";
+    try {
+        isListening = true;
+        recognition.start();
+        updateMicStatus(true);
+        elements.voiceTranscript.textContent = "Escuchando comandos de voz.";
+    } catch (error) {
+        console.warn("No se pudo iniciar el microfono.", error);
+        isListening = false;
+        updateMicStatus(false, {
+            variant: "warning",
+            icon: "fa-microphone-slash",
+            text: "Microfono bloqueado"
+        });
+        elements.voiceTranscript.textContent = "No se pudo activar el microfono. Revisa permisos del navegador.";
+        updatePermissionHint(
+            isIosDevice()
+                ? "Si Safari no deja el microfono, revisa Ajustes > Safari > Camara y Microfono y vuelve a probar."
+                : "Revisa los permisos del navegador para permitir el microfono.",
+            "warning"
+        );
+    }
 }
 
 function stopListening(keepTimer = true) {
@@ -329,6 +430,7 @@ function stopListening(keepTimer = true) {
 }
 
 function pauseTraining() {
+    stopListening();
     stopTimer();
     stopCamera();
     elements.voiceTranscript.textContent = "Entrenamiento en pausa.";
@@ -578,33 +680,120 @@ function stopTimer() {
     timerInterval = null;
 }
 
-async function startCamera() {
+async function startCamera(options = {}) {
     if (isCameraActive) {
         return isCameraActive;
     }
 
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-            video: {
-                width: { ideal: 1280 },
-                height: { ideal: 720 },
-                facingMode: "user"
-            },
-            audio: false
+    if (!navigator.mediaDevices?.getUserMedia) {
+        const unsupportedMessage = "Este navegador no permite abrir la camara desde esta pagina.";
+        elements.poseFeedback.textContent = unsupportedMessage;
+        elements.voiceTranscript.textContent = unsupportedMessage;
+        updateCameraStatus(false, {
+            variant: "warning",
+            icon: "fa-video-slash",
+            text: "Camara no compatible"
         });
+        updatePermissionHint(unsupportedMessage, "warning");
+        setCameraOverlayMessage("fa-triangle-exclamation", "La camara no esta disponible en este navegador.");
+        return false;
+    }
 
-        elements.poseVideo.srcObject = stream;
+    if (!isSecureMediaContext()) {
+        const secureMessage = isIosDevice()
+            ? "En iPhone o iPad, abre la app con HTTPS o localhost para permitir camara y microfono."
+            : "Abre la app con HTTPS o localhost para permitir la camara.";
+        elements.poseFeedback.textContent = secureMessage;
+        elements.voiceTranscript.textContent = secureMessage;
+        updateCameraStatus(false, {
+            variant: "warning",
+            icon: "fa-lock",
+            text: "Contexto inseguro"
+        });
+        updatePermissionHint(secureMessage, "warning");
+        setCameraOverlayMessage("fa-lock", "Usa HTTPS o localhost para activar la camara.");
+        return false;
+    }
+
+    try {
+        let requestedStream = null;
+
+        try {
+            requestedStream = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 },
+                    facingMode: "user"
+                },
+                audio: options.includeMicrophone
+                    ? {
+                        echoCancellation: true,
+                        noiseSuppression: true,
+                        autoGainControl: true
+                    }
+                    : false
+            });
+        } catch (error) {
+            if (!options.includeMicrophone) {
+                throw error;
+            }
+
+            requestedStream = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 },
+                    facingMode: "user"
+                },
+                audio: false
+            });
+
+            updateMicStatus(false, {
+                variant: "warning",
+                icon: "fa-microphone-slash",
+                text: "Microfono pendiente"
+            });
+            updatePermissionHint(
+                "La camara se activo, pero el microfono sigue pendiente o bloqueado. Puedes entrenar igual con conteo visual.",
+                "warning"
+            );
+        }
+
+        const videoTracks = requestedStream.getVideoTracks();
+        const audioTracks = requestedStream.getAudioTracks();
+
+        if (videoTracks.length === 0) {
+            throw new Error("No se encontro una pista de video disponible.");
+        }
+
+        activeCameraStream = new MediaStream(videoTracks);
+        audioTracks.forEach((track) => track.stop());
+        elements.poseVideo.srcObject = activeCameraStream;
+        configureVideoElement();
         await elements.poseVideo.play();
         isCameraActive = true;
         updateCameraStatus(true);
         elements.cameraOverlay.classList.add("hidden");
         elements.poseFeedback.textContent = "Camara activa. Colocate de cuerpo completo frente a la pantalla.";
+        updatePermissionHint(
+            options.includeMicrophone
+                ? "Permisos multimedia concedidos. Si Safari vuelve a preguntar por voz, acepta el uso del microfono."
+                : "Camara activa. El conteo por movimiento ya esta listo.",
+            "success"
+        );
         processPoseFrame();
         return true;
     } catch (error) {
         console.error("No se pudo iniciar la camara.", error);
-        elements.poseFeedback.textContent = "No se pudo acceder a la camara. Revisa permisos del navegador.";
-        updateCameraStatus(false);
+        const errorMessage = getCameraErrorMessage(error);
+        elements.poseFeedback.textContent = errorMessage;
+        elements.voiceTranscript.textContent = errorMessage;
+        updateCameraStatus(false, {
+            variant: "warning",
+            icon: "fa-video-slash",
+            text: "Camara bloqueada"
+        });
+        updatePermissionHint(errorMessage, "warning");
+        setCameraOverlayMessage("fa-camera", "Permite la camara y vuelve a tocar Iniciar.");
         return false;
     }
 }
@@ -635,18 +824,20 @@ function stopCamera() {
         poseFrameId = null;
     }
 
-    const stream = elements.poseVideo.srcObject;
-
-    if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
-        elements.poseVideo.srcObject = null;
+    if (activeCameraStream) {
+        activeCameraStream.getTracks().forEach((track) => track.stop());
+        activeCameraStream = null;
     }
+
+    elements.poseVideo.pause();
+    elements.poseVideo.srcObject = null;
 
     isCameraActive = false;
     isPoseProcessing = false;
     resetPoseCounterState();
     updateCameraStatus(false);
     elements.cameraOverlay.classList.remove("hidden");
+    setCameraOverlayMessage("fa-crosshairs", "Presiona iniciar para activar la camara");
 }
 
 function handlePoseResults(results) {
@@ -1008,6 +1199,9 @@ function render() {
     elements.routineSelect.value = state.settings.routine;
     elements.currentExercise.textContent = state.settings.routine;
     elements.heroGoal.textContent = state.settings.goal;
+    if (elements.heroGoalMirror) {
+        elements.heroGoalMirror.textContent = state.settings.goal;
+    }
     elements.geminiApiKeyInput.placeholder = localStorage.getItem(GEMINI_KEY_STORAGE_KEY)
         ? "Clave guardada en este navegador"
         : "Pega tu clave solo en tu navegador";
@@ -1157,20 +1351,75 @@ function getPerformanceLevel() {
     return state.settings.level;
 }
 
-function updateMicStatus(active) {
-    elements.micStatus.classList.toggle("active", active);
-    elements.micStatus.classList.toggle("muted", !active);
-    elements.micStatus.innerHTML = active
-        ? `<i class="fa-solid fa-microphone"></i> Microfono activo`
-        : `<i class="fa-solid fa-microphone-slash"></i> Microfono apagado`;
+function setStatusPill(element, { variant, icon, text }) {
+    element.classList.toggle("active", variant === "active");
+    element.classList.toggle("muted", variant === "muted");
+    element.classList.toggle("warning", variant === "warning");
+    element.innerHTML = `<i class="fa-solid ${icon}"></i> ${text}`;
 }
 
-function updateCameraStatus(active) {
-    elements.cameraStatus.classList.toggle("active", active);
-    elements.cameraStatus.classList.toggle("muted", !active);
-    elements.cameraStatus.innerHTML = active
-        ? `<i class="fa-solid fa-video"></i> Camara activa`
-        : `<i class="fa-solid fa-video-slash"></i> Camara apagada`;
+function updateMicStatus(active, options = {}) {
+    setStatusPill(elements.micStatus, {
+        variant: options.variant || (active ? "active" : "muted"),
+        icon: options.icon || (active ? "fa-microphone" : "fa-microphone-slash"),
+        text: options.text || (active ? "Microfono activo" : "Microfono apagado")
+    });
+}
+
+function updateCameraStatus(active, options = {}) {
+    setStatusPill(elements.cameraStatus, {
+        variant: options.variant || (active ? "active" : "muted"),
+        icon: options.icon || (active ? "fa-video" : "fa-video-slash"),
+        text: options.text || (active ? "Camara activa" : "Camara apagada")
+    });
+}
+
+function getCameraErrorMessage(error) {
+    if (!error) {
+        return "No se pudo acceder a la camara. Revisa permisos del navegador.";
+    }
+
+    if (error.name === "NotAllowedError" || error.name === "PermissionDeniedError") {
+        return isIosDevice()
+            ? "Safari no recibio permiso para la camara o el microfono. Acepta el permiso y usa HTTPS o localhost."
+            : "El navegador bloqueo la camara. Permite el acceso y vuelve a probar.";
+    }
+
+    if (error.name === "NotFoundError" || error.name === "DevicesNotFoundError") {
+        return "No se encontro una camara disponible en este dispositivo.";
+    }
+
+    if (error.name === "NotReadableError" || error.name === "TrackStartError") {
+        return "La camara esta siendo usada por otra app o pestaña.";
+    }
+
+    if (error.name === "OverconstrainedError") {
+        return "La camara no pudo abrirse con esa configuracion. Intenta con otro dispositivo.";
+    }
+
+    return "No se pudo acceder a la camara. Revisa permisos del navegador.";
+}
+
+function getSpeechErrorMessage(errorCode = "") {
+    if (errorCode === "not-allowed" || errorCode === "service-not-allowed") {
+        updatePermissionHint(
+            isIosDevice()
+                ? "Safari bloqueo el microfono. Revisa permisos del sitio y confirma la ventana de acceso."
+                : "El navegador bloqueo el microfono. Permite el acceso para usar comandos de voz.",
+            "warning"
+        );
+        return "No se pudo acceder al microfono. Revisa permisos del navegador.";
+    }
+
+    if (errorCode === "audio-capture") {
+        return "No se detecto un microfono disponible para los comandos de voz.";
+    }
+
+    if (errorCode === "network") {
+        return "La voz necesita conexion estable para funcionar correctamente.";
+    }
+
+    return "No se pudo acceder al microfono. Revisa permisos del navegador.";
 }
 
 function formatDuration(totalSeconds) {
