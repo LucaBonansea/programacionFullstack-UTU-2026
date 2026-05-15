@@ -403,7 +403,7 @@ function normalizeText(text) {
 async function startTraining() {
     const wasPausedSession = isTrainingPaused && isCameraActive;
     const cameraStarted = await startCamera({
-        includeMicrophone: Boolean(recognition && !isListening)
+        includeMicrophone: Boolean((recognition && !isListening) || isIosDevice())
     });
 
     if (cameraStarted) {
@@ -819,6 +819,8 @@ async function startCamera(options = {}) {
         updatePermissionHint(
             usedCameraOnlyFallback
                 ? "La camara se activo correctamente. El conteo sigue funcionando aunque el microfono no haya quedado disponible."
+                : isIosDevice() && options.includeMicrophone && !recognition
+                ? "Camara y microfono fueron solicitados en iPhone/iPad. El conteo funciona aunque Safari limite los comandos de voz web."
                 : options.includeMicrophone
                 ? "Permisos multimedia concedidos. Si Safari vuelve a preguntar por voz, acepta el uso del microfono."
                 : "Camara activa. El conteo por movimiento ya esta listo.",
