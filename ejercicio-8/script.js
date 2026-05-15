@@ -37,6 +37,7 @@ let lastRepTime = 0;
 let stableDownFrames = 0;
 let stableUpFrames = 0;
 let activeCameraStream = null;
+let isTrainingPaused = false;
 const metricHistory = {};
 
 function getFreshDefaultState() {
@@ -48,6 +49,7 @@ const elements = {
     repCounter: document.querySelector("#repCounter"),
     micStatus: document.querySelector("#micStatus"),
     cameraStatus: document.querySelector("#cameraStatus"),
+    cameraStage: document.querySelector(".camera-stage"),
     poseVideo: document.querySelector("#poseVideo"),
     poseCanvas: document.querySelector("#poseCanvas"),
     cameraOverlay: document.querySelector("#cameraOverlay"),
@@ -145,6 +147,14 @@ function bindEvents() {
     elements.goalInput.addEventListener("input", updateSettings);
     elements.levelSelect.addEventListener("change", updateSettings);
     elements.routineSelect.addEventListener("change", updateSettings);
+
+    elements.cameraOverlay.addEventListener("click", handleCameraOverlayActivation);
+    elements.cameraOverlay.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            handleCameraOverlayActivation();
+        }
+    });
 }
 
 function configureVideoElement() {
@@ -152,6 +162,9 @@ function configureVideoElement() {
     elements.poseVideo.setAttribute("webkit-playsinline", "true");
     elements.poseVideo.muted = true;
     elements.poseVideo.autoplay = true;
+    elements.cameraOverlay.setAttribute("role", "button");
+    elements.cameraOverlay.setAttribute("tabindex", "0");
+    elements.cameraOverlay.setAttribute("aria-label", "Activar o reanudar la camara");
 }
 
 function isIosDevice() {
@@ -203,11 +216,25 @@ function setCameraOverlayMessage(iconClass, message) {
     `;
 }
 
+function handleCameraOverlayActivation() {
+    if (isCameraActive && !isTrainingPaused) {
+        return;
+    }
+
+    startTraining();
+}
+
 function setupSpeechRecognition() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
         elements.voiceTranscript.textContent = "Tu navegador no soporta Web Speech API. La camara puede contar repeticiones igual.";
+        if (isIosDevice()) {
+            updatePermissionHint(
+                "En varios iPhone y iPad Safari no ofrece comandos de voz web de forma confiable. La camara y el contador siguen funcionando.",
+                "warning"
+            );
+        }
         updateMicStatus(false, {
             variant: isIosDevice() ? "warning" : "muted",
             icon: "fa-microphone-slash",
@@ -374,13 +401,21 @@ function normalizeText(text) {
 }
 
 async function startTraining() {
+    const wasPausedSession = isTrainingPaused && isCameraActive;
     const cameraStarted = await startCamera({
-        includeMicrophone: Boolean(recognition)
+        includeMicrophone: Boolean(recognition && !isListening)
     });
 
     if (cameraStarted) {
+        isTrainingPaused = false;
+        elements.cameraOverlay.classList.add("hidden");
+        if (wasPausedSession && !poseFrameId) {
+            processPoseFrame();
+        }
+        updateCameraStatus(true);
         startListening();
         startTimer();
+        elements.poseFeedback.textContent = "Camara activa. Colocate de cuerpo completo frente a la pantalla.";
         elements.voiceTranscript.textContent = recognition
             ? "Entrenamiento activo. Usa voz para pausar, reiniciar o terminar."
             : "Entrenamiento activo. Este navegador puede contar reps con camara aunque no tenga voz.";
@@ -430,17 +465,20 @@ function stopListening(keepTimer = true) {
 }
 
 function pauseTraining() {
-    stopListening();
+    isTrainingPaused = true;
     stopTimer();
-    stopCamera();
+    pauseCameraProcessing();
     elements.voiceTranscript.textContent = "Entrenamiento en pausa.";
-    elements.poseFeedback.textContent = "Pausado. Deci empezar o toca iniciar para continuar.";
+    elements.poseFeedback.textContent = recognition
+        ? "Pausado. Deci empezar o toca iniciar para continuar."
+        : "Pausado. Toca iniciar o presiona sobre la camara para continuar.";
 }
 
 function resetCurrentSession() {
     state.reps = 0;
     state.aiCoach = null;
     timerSeconds = 0;
+    isTrainingPaused = false;
     lastVoiceCommand = "";
     resetPoseCounterState();
     stopListening(false);
@@ -474,6 +512,7 @@ function finishTraining() {
     state.reps = 0;
     state.aiCoach = null;
     timerSeconds = 0;
+    isTrainingPaused = false;
     lastVoiceCommand = "";
     resetPoseCounterState();
 
@@ -514,6 +553,7 @@ function clearHistory() {
     state = getFreshDefaultState();
     state.settings = settings;
     timerSeconds = 0;
+    isTrainingPaused = false;
     saveState();
     render();
 }
@@ -717,6 +757,7 @@ async function startCamera(options = {}) {
 
     try {
         let requestedStream = null;
+        let usedCameraOnlyFallback = false;
 
         try {
             requestedStream = await navigator.mediaDevices.getUserMedia({
@@ -746,6 +787,7 @@ async function startCamera(options = {}) {
                 },
                 audio: false
             });
+            usedCameraOnlyFallback = true;
 
             updateMicStatus(false, {
                 variant: "warning",
@@ -775,10 +817,12 @@ async function startCamera(options = {}) {
         elements.cameraOverlay.classList.add("hidden");
         elements.poseFeedback.textContent = "Camara activa. Colocate de cuerpo completo frente a la pantalla.";
         updatePermissionHint(
-            options.includeMicrophone
+            usedCameraOnlyFallback
+                ? "La camara se activo correctamente. El conteo sigue funcionando aunque el microfono no haya quedado disponible."
+                : options.includeMicrophone
                 ? "Permisos multimedia concedidos. Si Safari vuelve a preguntar por voz, acepta el uso del microfono."
                 : "Camara activa. El conteo por movimiento ya esta listo.",
-            "success"
+            usedCameraOnlyFallback ? "warning" : "success"
         );
         processPoseFrame();
         return true;
@@ -818,6 +862,23 @@ async function processPoseFrame() {
     poseFrameId = requestAnimationFrame(processPoseFrame);
 }
 
+function pauseCameraProcessing() {
+    if (poseFrameId) {
+        cancelAnimationFrame(poseFrameId);
+        poseFrameId = null;
+    }
+
+    isPoseProcessing = false;
+    resetPoseCounterState();
+    updateCameraStatus(false, {
+        variant: "warning",
+        icon: "fa-video",
+        text: "Camara en pausa"
+    });
+    elements.cameraOverlay.classList.remove("hidden");
+    setCameraOverlayMessage("fa-crosshairs", "Presiona aqui o toca iniciar para continuar");
+}
+
 function stopCamera() {
     if (poseFrameId) {
         cancelAnimationFrame(poseFrameId);
@@ -837,7 +898,12 @@ function stopCamera() {
     resetPoseCounterState();
     updateCameraStatus(false);
     elements.cameraOverlay.classList.remove("hidden");
-    setCameraOverlayMessage("fa-crosshairs", "Presiona iniciar para activar la camara");
+    setCameraOverlayMessage(
+        "fa-crosshairs",
+        isTrainingPaused
+            ? "Presiona aqui o toca iniciar para continuar"
+            : "Presiona aqui o toca iniciar para activar la camara"
+    );
 }
 
 function handlePoseResults(results) {
