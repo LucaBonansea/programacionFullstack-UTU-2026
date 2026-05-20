@@ -3,22 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Ejercicio 10</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <text class="text-1">Texto 1</text>
-    <button class="btn-1">Boton 1</button>
-
-
-    <p class="text-2">Texto 1</p>
-    <button class="btn-2">Boton 2</button>
-
-    <img class="imagen"  alt="Ciudad de mexico">
-
-    <input type="text" class="input-user">
-    <input type="text" class="contra">
-    <button class="send">Enviar</button>
+    <section class="texts">
+        <div>
+            <p class="text-1">Texto 1</p>
+            <button class="btn-1">Boton 1</button>
+        </div>
+        <div>
+            <p class="text-2">Texto 2</p>
+            <button class="btn-2">Boton 2</button>
+        </div>
+    </section>
+    
+    <div class="container-img">
+        <img class="imagen"  alt="Ciudad de mexico">
+    </div>
+    
+    <section class="form1">
+        <input type="text" class="input-user">
+        <input type="text" class="contra">
+        <button class="send">Enviar</button>
+    </section>
+    
    
 
 
@@ -48,6 +57,8 @@
         <input type="text" placeholder="Mensaje..." class="mensaje-input" id="mensaje">
         <button class="enviar" type="button">Enviar</button>
     </form>
+
+    <div class="error"></div>
 
     <div class="resultado">
         <h3>Nombre: </h3>

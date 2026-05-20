@@ -1,7 +1,7 @@
 const $btn1 = document.querySelector(".btn-1");
 
 $btn1.addEventListener("click", function(){
-    document.querySelector(".text-1").textContent = "Primer texto cambiado";
+    document.querySelector(".text-1").textContent = "Primer texto cambiado!";
 });
 
 
@@ -10,7 +10,7 @@ const $btn2 = document.querySelector(".btn-2");
 
 
 $btn2.addEventListener("click", function(){
-    document.querySelector(".text-2").textContent = "Segundo texto cambiado!";
+    document.querySelector(".text-2").innerHTML = "Segundo texto cambiado!";
 });
 
 
@@ -50,12 +50,12 @@ $oscuro.addEventListener("click", function(){
 const $lista = document.querySelector(".lista");
 
 const $agregar = document.querySelector(".add");
-
+let amount = 8;
 
 $agregar.addEventListener('click', function(){
-    
+    amount++;
     const $nuevopunto = document.createElement("li");
-    $nuevopunto.textContent = "Nuevo punto";
+    $nuevopunto.textContent = "Punto " + amount;
 
     $lista.appendChild($nuevopunto);
 });
@@ -79,20 +79,28 @@ const $result = document.querySelector(".resultado");
 
 
 $enviar.addEventListener('click', function(){
-    $output_nombre.textContent = $nombre.value;
-    $output_color.textContent = $color.value;
-    $output_mensaje.textContent = $mensaje.value;
-    $result.classList.add("card");
-
     const $card = document.createElement("div");
     $card.innerHTML += "<h2> Nombre: " + $nombre.value + "</h2>";
     $card.innerHTML += "<h2> Color favorito: " + $color.value + "</h2>";
     $card.innerHTML += "<h2> Mensaje:" + $mensaje.value + "</h2>";
 
+    const $error = document.querySelector(".error");
+
     if($nombre.value != "" && $color.value != "" && $mensaje.value != ""){
+
+        $error.textContent = "";
+        $error.classList.remove("error-style");
+
+        $output_nombre.textContent = $nombre.value;
+        $output_color.textContent = $color.value;
+        $output_mensaje.textContent = $mensaje.value;
+
+        $result.classList.add("card");
         document.body.append($card);
     }else{
-        alert("Por favor, completa todos los campos.");
+     
+      $error.textContent = "Por favor complete todos los campos!";  
+      $error.classList.add("error-style");
     }
  
 });
