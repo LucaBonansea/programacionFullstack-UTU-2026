@@ -1,0 +1,23 @@
+.red{
+    color: red;
+    font-size: 5rem;
+}
+
+.descorar{
+    color: purple;
+    font-size: 4rem;
+}
+
+.dark{
+    color:white;
+    background-color: black;
+}
+
+.card{
+    background-color:  lightgray;
+    margin: 20px;
+    padding: 20px;
+    width: 200px;
+    color:white;
+    border-radius: 10px;
+}
