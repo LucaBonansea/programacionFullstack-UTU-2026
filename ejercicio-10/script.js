@@ -86,7 +86,7 @@ $enviar.addEventListener('click', function(){
 
     const $error = document.querySelector(".error");
 
-    if($nombre.value != "" && $color.value != "" && $mensaje.value != ""){
+    if($nombre.value !== "" && $color.value !== "" && $mensaje.value !== ""){
 
         $error.textContent = "";
         $error.classList.remove("error-style");
