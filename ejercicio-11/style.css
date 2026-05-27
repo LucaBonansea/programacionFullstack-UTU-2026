@@ -1,0 +1,107 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #DDDCDC;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.nav{
+    display: flex;
+    justify-content: center;
+}
+
+.galeria{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.galeria > div{
+    width: 22%;
+}
+
+.formulario{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container-form{
+    background-color: whitesmoke;
+    padding: 50px 20px;
+    border-radius: 2%;
+    margin: 20px;
+}
+
+input{
+    margin: 20px 0px;
+    border-radius: 0.2rem;
+    border: 1px solid grey;
+}
+
+.imagenes{
+    width: 100%;
+    object-fit: fill;
+}
+
+.add{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(30, 255, 90);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 0.5rem;
+    border: 1px solid white;
+}
+
+.remove_all{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(234, 66, 66);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 0.5rem;
+    border: 1px solid white;
+}
+
+.error-style{
+    border-radius: 2%;
+    background-color: red;
+    border: 2px solid black;
+    margin: 20px;
+    padding: 20px;
+    color: white;
+    font-size: 1.2rem;
+    width: 300px;
+    margin: 0px auto;
+}
+
+
+.favorito-style{
+    padding: 10px 15px;
+    border: 0px solid black;
+    background-color: transparent;
+}
+
+.eleminar{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(234, 66, 66);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 0.5rem;
+    border: 1px solid white;
+}
+
+.imagenes-fav{
+   color: rgb(237, 237, 107);
+}
+
+.card-style{
+    margin: 20px;
+    background-color: whitesmoke;
+    padding: 20px;
+    border-radius: 2%;
+}
