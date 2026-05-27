@@ -95,6 +95,33 @@ input{
     border: 1px solid white;
 }
 
+.show_all{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(77, 232, 240);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 0.5rem;
+    border: 1px solid white;
+}
+
+.fav_all{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(237, 237, 107);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 0.5rem;
+    border: 1px solid white;
+}
+
+.no_fav_all{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(228, 107, 237);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 0.5rem;
+    border: 1px solid white;
+}
+
 .imagenes-fav{
    color: rgb(237, 237, 107);
 }
@@ -104,4 +131,20 @@ input{
     background-color: whitesmoke;
     padding: 20px;
     border-radius: 2%;
+}
+
+button{
+    cursor: pointer;
+}
+
+span{
+    padding: 10px 15px;
+    border-radius: 0.5rem;
+    border: 1px solid grey;
+
+}
+
+.container-form > p{
+    margin: 20px 0px;
+    padding: 10px 15px;
 }
